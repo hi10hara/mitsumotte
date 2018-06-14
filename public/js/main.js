@@ -1,10 +1,57 @@
-var database = firebase.database()
-var companiesRef = database.ref('/companies/repair-watch/0')
-companiesRef.on('value', companies=>{
-    const myStore = companies.val()
-    console.log(myStore)
-    document.querySelector('.store-name').textContent = myStore.name
-    document.querySelector('.store-info').textContent = myStore.description
-    document.querySelector('.reputations').textContent = myStore.reputs.map(r=>r.repute).join('\n')
-    
-})
+const Rate = {
+  template:[
+    '<div class="rating">',
+      '<div class="rate-base" :style="{width:rateWidth}"></div>',
+      '<div class="rate-cover">',
+        '<img class="star" src="img/star.png">',
+        '<img class="star" src="img/star.png">',
+        '<img class="star" src="img/star.png">',
+        '<img class="star" src="img/star.png">',
+        '<img class="star" src="img/star.png">',
+      '</div>',
+    '</div>'].join(''),
+  computed:{
+    rateWidth(){
+      const r = this.rate
+      const p = r / 5 * 100
+      return p + '%'
+    }
+  },
+  props:{
+    rate:Number
+  },
+}
+/*globals Vue*/
+function main(){
+  var database = firebase.database()
+  var companiesRef = database.ref('/companies/repair-watch/0')
+  companiesRef.on('value', companies=>{
+    window.rootVm.store = companies.val()
+    console.log(rootVm.store)
+  })
+  window.rootVm = new Vue({
+    el:'#app',
+    data:{
+      editDesc:false,
+      store:{
+        name:'',
+        description:'',
+        reputs:[
+        ]
+      },
+      requests:[]
+    },
+    components:{
+      'rate-parts':Rate
+    },
+    watch:{
+      'store.description'(v){
+
+      }
+    },
+    methods:{
+
+    }
+  })
+}
+main()
