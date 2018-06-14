@@ -5,16 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> ウォッチさいとう川崎店</title>
     <!-- update the version number as needed -->
-    <script defer src="/__/firebase/5.0.4/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/5.0.4/firebase-auth.js"></script>
-    <script defer src="/__/firebase/5.0.4/firebase-database.js"></script>
-    <script defer src="/__/firebase/5.0.4/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/5.0.4/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
-
+    <script defer src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyB9vdXsq1o_XAa_8kjFP2tZyARRIg9F1X0",
+        authDomain: "digicom-low-1111-06268460.firebaseapp.com",
+        databaseURL: "https://digicom-low-1111-06268460.firebaseio.com",
+        projectId: "digicom-low-1111-06268460",
+        storageBucket: "digicom-low-1111-06268460.appspot.com",
+        messagingSenderId: "430203856083"
+      };
+      firebase.initializeApp(config);
+    </script>
     <style media="screen">
+<<<<<<< HEAD
       html,body {
         height: 100%;
         width: 100%;
@@ -27,12 +38,61 @@
       }
       header {
         background-color: black
+=======
+      html,body{
+        height:100%;
+        width:100%;
+        margin:0;
+        font-family:'メイリオ'
+      }
+      body{
+        background-color:rgb(255, 224, 189);
+      }
+      div{
+        box-sizing:border-box;
+      }
+      .header{
+        margin:0;
+        font-size:30px;
+        height:40px;
+        color:white;
+        background-color:rgb(255, 136, 0);
+      }
+      .header-icon{
+        height:100%;
+      }
+      .main{
+        height:calc(100% - 40px);
+      }
+      .requests{
+        height:100%;
+        float:left;
+        width:70%;
+      }
+      .your-info{
+        height:100%;
+        float:left;
+        width:30%;
+        background-color:white;
+>>>>>>> 1374358106d9809167e68952e5caf3633e9d80ef
       }
     </style>
   </head>
     <body>
+<<<<<<< HEAD
       
       <h1 class="header">Mitsumotte</h1>           
+=======
+      <h1 class="header"><img class="header-icon" src="img/icon.png"/><span class="title">Mitsumotte</span></h1>
+      <div class="main">
+        <div class="requests"></div>
+        <div class="your-info">
+          <div class="store-name"></div>
+          <div class="store-info"></div>
+          <div class="reputations"></div>
+        </div>
+      </div>
+      <script src="js/main.js"></script>
+>>>>>>> 1374358106d9809167e68952e5caf3633e9d80ef
     </body>
-
 </html>
