@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mitsumotte</title>
     <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/index.css">
     <!-- update the version number as needed -->
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
@@ -26,127 +27,20 @@
       };
       firebase.initializeApp(config);
     </script>
-    <style media="screen">
-      html,body{
-        height:100%;
-        width:100%;
-        margin:0;
-        font-family:'メイリオ'
-      }
-      body{
-        background-color:rgb(255, 255, 255);
-      }
-      #app{
-        height:100%;
-        width:100%;
-      }
-      div{
-        box-sizing:border-box;
-      }
-      .header{
-        margin-top:5px;
-        font-size:30px;
-        height:70px;
-        color:white;
-        background-color:rgb(255, 255, 255);
-    
-      }
-      .header-icon{
-        height:100%;
-      }
-      .main{
-        height:calc(100% - 40px);
-      }
-      .requests{
-        height:100%;
-        float:left;
-        width:70%;
-      }
-      .your-info{
-        height:100%;
-        float:left;
-        width:30%;
-        background-color:white;
-      }
-      .store-wrap{
-        margin-bottom:10px;
-      }
-      .store-head{
-        height:40px;
-        background-color: rgb(236, 212, 160)
-      }
-      .store-name{
-        font-size: 20px;
-      }
-      .store-info{
-        padding:10px;
-        height:100px;
-      }
-      .store-info textarea{
-        height:100%;
-        resize:none;
-      }
-      .store-icon{
-        float:left;
-        height:100%;
-      }
-      .reputations{
-        margin:10px;
-        padding:5px;
-        border-bottom:solid 1px gray;
-
-      }
-      .reputation{
-        margin:10px;
-
-      }
-
-      .rep-icon{
-        width:25px;
-        height:25px;
-        display:inline-block;
-        background-image:url(img/user.png);
-        background-repeat: no-repeat;
-        background-size:100%;
-      }
-      .rep-name{
-        width:100px;
-        display:inline-block;
-      }
-      .rate-avg{
-        width:100%;
-        float:right;
-      }
-      .rating{
-        display:inline-block;
-        vertical-align:bottom;
-        position:relative;
-        width:125px;
-        height:25px;
-      }
-      .rate-base,.rate-cover{
-        z-index:100;
-        position:absolute;
-        top:0;
-        left:0;
-        height:100%;
-      }
-      .rate-base{
-        background-color:rgb(255, 230, 6);
-        width:0%;
-      }
-      .star{
-        width:25px;
-        height:25px;
-      }
-    </style>
   </head>
   
 <body>
   <div id="app">
-    <h1 class="header"><img class="header-icon" src="img/Mitsumotte_logo.png"/></h1>
+    <h1 class="header"><img class="header-icon" src="img/logo.png"/></h1>
     <div class="main">
-      <div class="requests"></div>
+      <div class="requests">
+        <transition name="loading">
+            <div class="requests-loading" v-if="requestsLoading">
+              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+        </transition>
+        <mi-request class="req" v-for="(r, key) in requests" :key="key" :request="r" :id="key"></mi-request>
+      </div>
       <div class="your-info">
         <div class="store-warp">
           <div class="store-head">
@@ -170,6 +64,16 @@
       </div>
     </div>
   </div>
+  <script type="text/x-template" id="r">
+    <div class="req">
+      <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span></div>
+      <div class="req-body">
+        <div>予算上限:{{request.request['budget-limit']}}</div>
+        {{request.request.title}}
+        <div class="applying">現在交渉中: {{request.applying}}</div>
+      </div>
+    </div>
+  </script>
 <script src="js/main.js"></script>
 </body>
 </html>

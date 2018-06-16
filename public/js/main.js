@@ -1,3 +1,7 @@
+Vue.filter('dateFormat',(_v)=>{
+  const v = new Date(_v)
+  return v.toLocaleDateString() + ' ' + v.toLocaleTimeString()
+})
 const Rate = {
   template:[
     '<div class="rating">',
@@ -21,28 +25,47 @@ const Rate = {
     rate:Number
   },
 }
+
+const Request = {
+  template:'#r',
+  props:{
+    id:String,
+    request:Object
+  }
+}
+
 /*globals Vue*/
+const myCompanyName = 'takahashi_tokeiten'
 function main(){
   var database = firebase.database()
-  var companiesRef = database.ref('/companies/repair-watch/0')
+  var companiesRef = database.ref(`/companies/${myCompanyName}`)
   companiesRef.on('value', companies=>{
-    window.rootVm.store = companies.val()
-    console.log(rootVm.store)
+    const storeInfo = companies.val()
+    window.rootVm.store = storeInfo
+    const {category} = storeInfo
+    const categoryRef = database.ref(`requests/${category}`)
+    categoryRef.on('value', requests=>{
+       const reqs = requests.val()
+       window.rootVm.requests = reqs
+       window.rootVm.requestsLoading = false
+    })
   })
   window.rootVm = new Vue({
     el:'#app',
     data:{
       editDesc:false,
+      requestsLoading:true,
       store:{
         name:'',
         description:'',
         reputs:[
         ]
       },
-      requests:[]
+      requests:{}
     },
     components:{
-      'rate-parts':Rate
+      'rate-parts':Rate,
+      'mi-request':Request
     },
     watch:{
       'store.description'(v){
