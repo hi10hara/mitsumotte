@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="format-detection" content="telephone=no">
+    <meta charset="utf8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="orange">
+    <meta name="apple-mobile-web-app-title" content="Mitsumotte">
+    <link rel="apple-touch-icon" href="/img/icon72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/img/icon114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/img/icon120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/img/icon144.png" sizes="144x144">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>Mitsumotte</title>
+    <script src="lib/hammer.js"></script>
+    <script src="js/service-worker-register.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyB9vdXsq1o_XAa_8kjFP2tZyARRIg9F1X0",
+        authDomain: "digicom-low-1111-06268460.firebaseapp.com",
+        databaseURL: "https://digicom-low-1111-06268460.firebaseio.com",
+        projectId: "digicom-low-1111-06268460",
+        storageBucket: "digicom-low-1111-06268460.appspot.com",
+        messagingSenderId: "430203856083"
+      };
+      firebase.initializeApp(config);
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/javascript" src="bundle/main.js"></script>
+    <script>
+    navigator.serviceWorker
+      .register('service-worker.js')
+      .then(function() { console.log('Service Worker Registered'); });
+  </script>
+  </body>
+</html>

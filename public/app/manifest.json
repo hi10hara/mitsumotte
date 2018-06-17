@@ -1,0 +1,30 @@
+{
+  "short_name": "Mitsumotte",
+  "name": "Mitsumotte mobile",
+  "icons": [
+    {
+      "src": "img/icon48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "img/icon96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "img/icon144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "img/icon192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color":"#2196F3",
+  "theme_color": "#2196F3",
+  "display": "standalone"
+}
