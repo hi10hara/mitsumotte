@@ -1,0 +1,34 @@
+[
+  {
+    "name":"repair-watch",
+    "caption":"時計修理",
+    "icon":"iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAA9GAAAPRgFoUyCCAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAXRQTFRF////qqqqjJmZm5umjJalkZWjiZCchoyahY2ZgYiWgIiVgIaVfYWSfIOTdn6NdXuLbnWFaXGBZm6AZGt9Y2t8XmV4WWF0WF9zUVltT1drSlJnQkpgQ0thRExiRU1jRk5jRk5kR05kR09kSVFmSlJnTFRoUVltUlpuVFxvVl5xV15yWWBzYGh6YWh7aXGCc4O/dXyMdoXAd4fBeH+OeIfBeYjBeoGQeonCfIORfIvDfoWTgYiWgpHFh46bh5bHiJbHiZfIi5KejZSgj5aij53KkZ/Lm6GsnKKtnqSvn6vQoaexoq3SpKu0prLTqLPUqrC5rLK7sLrXs7nBtbzDvMHIvsPKwcfMxMzfxcrQx8/gyM7SydHhy9LizdTjztXj0NXZ09jc1Nrd1dzm1tzm193g193n2N/n2d/h2t/i2+Di3OLo3OLp3eLk3ePp3uPl3uTp3uTq3+Tm4ebn4ufr4ujp4+jq4+ns5Onr5Ors5uvs5uvt5+zthv4rsQAAABt0Uk5TAAYUFzM6aoGEnqGmr7PJzd/n6u7v9Pj5/P3+mAcQxwAAA0JJREFUWMOtl+dDE0EQxZcqHYRAgF80JAKiCCciKEgLqKiIDYxIE6QoIr3G+ef9cMclMbebHPF9ymZ23t3tTnmjlAZFZVU1dQ3B1tZgQ11NVVmR8oXiyvo20tBWX1mcq3dhdWMID4QaqwtzcC+oaEaL5oqCbP43mtzd0e7ewdj0dGywtzvq/tl0w+heErja2DU6fyEuLuZHu64sgRK9f2mLvadjaiHhuH796vxILEx12NaWUp1/eRiASGzHffRJX9+Ju9iJRQAIl3ufXq191sNryVeXQ8s6TFmuDdv3U+txlgU3AeiMSxrevUtfxzsBuJnJYD+/Z12yYL3HfoeM7weg/1iy4rgfgH/OoTQMMJmQHJCYBAin3UVJC0B/Qpa2srlvLUmiH6AlNR4CAD3H8t16vGL2X3lsfZfjHoBASvwCdK6LXI5Zr9Md3rxNX7+2xi5F1jsB3KguaAJCcRGRw48baft/cut32h8bHw9FROIhoOnqLisAhj3feBM2PQ3DABVO/jcDkTV/BGsRoNmuD9UAMfFHIDGAaqWUUo1Ax45fgp0OoFEppYpDwJT4JZApIFSslKoEWPBPsABQqZSqB7oS/gkSXUC9UkVtwKj4J5BRoK1IlQHMX4dgHqBMVQHRi+sQXESBKlUDdGtzZw7mtMZuoEbVAb2aHfsPAR7ua8y9QJ1qAAY1O57C/XvwVGMeBBpU0I7jreXz5Id/tvEB3ou8h28ZvufLW3Y0B1UrMC2rlvXcTeGI28juiIjc5UMGwXPLWpVpoNUh2B55NHtlPHoQsXGb6KnIaTufMghmH41sOwRBfSr+CPPs6OgZ4R/6hAwaD/ElhELw0niIpmuUV+3Q/kqM12gOpLPFxbMsgWQOZROcUDYnkwlOMpnT2QQnnc0FxdQinYJiLmkGuCXNWFQNcIuqsazrkSzrxsaiR0pjMbU2LVJbm6m5apHaXFPb+8qLL2bHLy9WMtt7UmAcDFgzZoIZa+AgQ2AkJc6vJ+O7ZoLd8Se/MiVOUmSdZ//6cy+RlbfMy19o5i91NWL7z8TEnxzFtrfc37OsvRzlvvfAcTk0dJnrwOE98hwc+Bh58h+68h/7/sPgmf/o+x+Gb3/j/18BGJRlsBp0kgAAAABJRU5ErkJggg==",
+    "request-scheme":[
+      {
+        "name":"title",
+        "type":"text",
+        "caption":"見積もりタイトル",
+        "require":true
+      },
+      {
+        "name":"notes",
+        "type":"notes",
+        "caption":"状態についての説明",
+        "require":true
+      },
+      {
+        "name":"imgs",
+        "type":"file",
+        "caption":"壊れた時計の写真",
+        "require":true
+      },
+      {
+        "name":"budget",
+        "type":"budget",
+        "caption":"予算上限",
+        "require":true
+      }
+
+    ]
+  }
+]

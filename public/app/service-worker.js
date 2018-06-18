@@ -1,4 +1,4 @@
-const cacheName = 'weatherPWA-step-5-1'
+const cacheName = 'weatherPWA-step-50-3'
 const filesToCache = [
   '/app/',
   '/app/index.html'

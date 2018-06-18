@@ -1,5 +1,10 @@
 <style>
-
+.category-icon{
+  display:inline-block;
+  background-size:contain;
+  height:50px;
+  width:50px;
+}
 </style>
 
 <template>
@@ -15,7 +20,7 @@
           <input type="text" class="category-filter" placeholder="カテゴリ検索">
           <div class="categories">
             <div v-for="c in categories" class="cate-item" :key="c.name">
-                <div><span :class="'icon-' + c.icon"></span>
+                <div><div class="category-icon" :style="{'background-image':`url(data:image/png;base64,${c.icon})`}"/>
                   {{c.caption}}
                 </div>
             </div>
