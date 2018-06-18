@@ -31,7 +31,12 @@
   
 <body>
   <div id="app">
-    <h1 class="header"><img class="header-icon" src="img/logo.png"/></h1>
+
+    <h1 class="header"><img class="header-icon" src="img/logo.png"/>
+    <div class="search-box">
+      <input name="keywords2" id="keywords2" placeholder="検索" type="text" /> 
+      <input type="image" src="img/btn2.gif" alt="検索" name="searchBtn2" id="searchBtn2" />  
+    </div></h1>
     <div class="main">
       <div class="requests">
         <transition name="loading">
@@ -61,15 +66,20 @@
             <div class="repute">{{r.repute}}</div>
           </div>
         </div>
+        <img class="ad" src="img/NTTコミュニケーションズ.png"/>
       </div>
     </div>
   </div>
+  
   <script type="text/x-template" id="r">
     <div class="req">
       <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span></div>
       <div class="req-body">
         <div>予算上限:{{request.request['budget-limit']}}</div>
         {{request.request.title}}
+        <div class="request-top-img">
+          <img class="top-img" :src="request.imgs[0]">
+        </div>
         <div class="applying">現在交渉中: {{request.applying}}</div>
       </div>
     </div>

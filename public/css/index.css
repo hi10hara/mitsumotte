@@ -5,13 +5,13 @@ html,body{
   font-family:'メイリオ'
 }
 body{
-  background-color:rgb(255, 231, 194);
+  background-color:rgb(255, 255, 255);
 }
 #app{
   height:100%;
   width:100%;
 }
-div{
+div,input{
   box-sizing:border-box;
 }
 .header{
@@ -20,7 +20,6 @@ div{
   height:50px;
   color:white;
   background-color:rgb(255, 158, 12);
-
 }
 .header-icon{
   height:100%;
@@ -28,11 +27,44 @@ div{
 .main{
   height:calc(100% - 50px);
 }
+.search-box{
+  padding-top:10px;
+  width:300px;
+  float:right;
+} 
+#keywords2  {
+  height:25px;
+  vertical-align:top;
+  float:left; 
+  width: 250px;  
+  background: rgb(255, 255, 255);  
+  border: none;  
+  padding: 4px;  
+  color: rgb(8, 7, 7);  
+}  
+#searchBtn2 {
+  float:left;
+  width:40x;
+  vertical-align:top;
+}  
+#keywords2:hover {
+  background:#f7f6bd;
+}
+*:first-child + html #searchBtn2    {  
+  top: 1px;  
+}  
+
 .requests{
   position:relative;
   height:100%;
   float:left;
   width:70%;
+}
+.ad{
+  height: 40%;
+  float: right;
+  width:80%;
+  margin-top: 10%
 }
 .your-info{
   height:100%;
@@ -45,7 +77,7 @@ div{
 }
 .store-head{
   height:40px;
-  background-color: rgb(236, 212, 160)
+  background-color: rgb(248, 248, 247)
 }
 .store-name{
   font-size: 20px;
@@ -116,8 +148,8 @@ div{
   background-color:white;
   position:relative;
   border-radius:10px;
-  width:200px;
-  height:150px;
+  width:40%;
+  height:450px;
   margin:16px 8px;
   box-shadow:3px 2px 3px gray;
   overflow:hidden;
