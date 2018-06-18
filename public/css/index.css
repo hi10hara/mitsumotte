@@ -5,22 +5,21 @@ html,body{
   font-family:'メイリオ'
 }
 body{
-  background-color:rgb(255, 231, 194);
+  background-color:rgb(255, 255, 255);
 }
 #app{
   height:100%;
   width:100%;
 }
-div{
+div,input{
   box-sizing:border-box;
 }
 .header{
   margin:0px;
   font-size:30px;
-  height:50px;
+  height:40px;
   color:white;
   background-color:rgb(255, 158, 12);
-
 }
 .header-icon{
   height:100%;
@@ -28,6 +27,29 @@ div{
 .main{
   height:calc(100% - 50px);
 }
+.search-box{
+  padding-top:10px;
+  width:300px;
+  float:right;
+} 
+#keywords2  {
+  height:25px;
+  vertical-align:top;
+  float:left; 
+  width: 250px;  
+  background: rgb(255, 255, 255);  
+  border: none;  
+  padding: 4px;  
+  color: #FFF;  
+}  
+#searchBtn2 {
+  float:left;
+  width:40x;
+  vertical-align:top;
+}  
+*:first-child + html #searchBtn2    {  
+  top: 1px;  
+}  
 .requests{
   position:relative;
   height:100%;
@@ -45,7 +67,7 @@ div{
 }
 .store-head{
   height:40px;
-  background-color: rgb(236, 212, 160)
+  background-color: rgb(248, 248, 247)
 }
 .store-name{
   font-size: 20px;
