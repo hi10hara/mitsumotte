@@ -76,6 +76,9 @@
       <div class="req-body">
         <div>予算上限:{{request.request['budget-limit']}}</div>
         {{request.request.title}}
+        <div class="request-top-img">
+          <img class="top-img" :src="request.imgs[0]">
+        </div>
         <div class="applying">現在交渉中: {{request.applying}}</div>
       </div>
     </div>
