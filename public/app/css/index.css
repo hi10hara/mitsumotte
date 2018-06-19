@@ -136,15 +136,3 @@ input[type=text]{
   height:calc(100% - 10vw);
   overflow-y:scroll;
 }
-.cate-item{
-  padding:1vw;
-  margin-bottom:1vw;
-  height:9vw;
-  background-color:white;
-  text-align:left;
-  text-indent:3vw;
-  box-shadow:var(--element-shadow);
-}
-.cate-item [class^=icon]{
-  color:gray;
-}

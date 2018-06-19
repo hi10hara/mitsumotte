@@ -2,8 +2,22 @@
 .category-icon{
   display:inline-block;
   background-size:contain;
-  height:50px;
-  width:50px;
+  height:40px;
+  width:40px;
+  vertical-align:bottom;
+}
+.cate-item{
+  font-size:35px;
+  padding:1vw;
+  margin-bottom:1vw;
+  height:55px;
+  background-color:white;
+  text-align:left;
+  text-indent:3vw;
+  box-shadow:var(--element-shadow);
+}
+.cate-caption{
+  vertical-align:bottom;
 }
 </style>
 
@@ -17,11 +31,11 @@
     <div :class="moveDirection" class="main-content">
       <transition name="swipe">
         <div class="category-body" v-if="body === 'category'">
-          <input type="text" class="category-filter" placeholder="カテゴリ検索">
+          <input type="text" class="category-filter" placeholder="カテゴリ検索" v-model="searchText">
           <div class="categories">
-            <div v-for="c in categories" class="cate-item" :key="c.name">
+            <div v-for="c in filterdCategories" class="cate-item" :key="c.name">
                 <div><div class="category-icon" :style="{'background-image':`url(data:image/png;base64,${c.icon})`}"/>
-                  {{c.caption}}
+                  <span class="cate-caption">{{c.caption}}</span>
                 </div>
             </div>
           </div>
@@ -73,7 +87,8 @@ export default {
         typeName:typeof cordova,
         uncovered:false,
         categories:[],
-        moveDirection:'left'
+        moveDirection:'left',
+        searchText:''
       }
     },
     created:function(){
@@ -95,6 +110,14 @@ export default {
         }
         this.setBody(views[nowIndex])
       })
+    },
+    computed:{
+      filterdCategories(){
+        const st = this.searchText
+        return this.categories.filter(t=>{
+          return t.caption.includes(st)
+        })
+      }
     },
     methods:{
       initDatabase(){
