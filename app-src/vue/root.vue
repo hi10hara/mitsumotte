@@ -91,7 +91,7 @@ export default {
         searchText:''
       }
     },
-    created:function(){
+    created(){
       setTimeout(this.uncover, 3000)
     },
     mounted(){

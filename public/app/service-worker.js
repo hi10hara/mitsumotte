@@ -1,7 +1,5 @@
 const cacheName = 'weatherPWA-step-50-3'
 const filesToCache = [
-  '/app/',
-  '/app/index.html'
 ]
 
 self.addEventListener('install', function(e) {
