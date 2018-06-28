@@ -33,7 +33,7 @@
         <div class="category-body" v-if="body === 'category'">
           <input type="text" class="category-filter" placeholder="カテゴリ検索" v-model="searchText">
           <div class="categories">
-            <div v-for="c in filterdCategories" class="cate-item" :key="c.name">
+            <div v-for="c in filterdCategories" class="cate-item" :key="c.name" @click="showRequest">
                 <div><div class="category-icon" :style="{'background-image':`url(data:image/png;base64,${c.icon})`}"/>
                   <span class="cate-caption">{{c.caption}}</span>
                 </div>
@@ -71,9 +71,12 @@
           <span class="icon-user"></span>
       </div>
     </div>
+    <request-view/>
   </div>
 </template>
 <script>
+import eventHub from '../js/event-hub'
+import RequestView from './request.vue'
 const views = [
   'category',
   'talk',
@@ -81,6 +84,9 @@ const views = [
   'user'
 ]
 export default {
+  components:{
+    'request-view':RequestView
+  },
     data(){
       return {
         body:'category',
@@ -141,7 +147,11 @@ export default {
       },
       uncover:function(){
         this.uncovered = true
+      },
+      showRequest(){
+        eventHub.$emit('show-request-view')
       }
     }
+
   }
 </script>
