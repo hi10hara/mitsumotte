@@ -37,10 +37,12 @@
         <img class="ad" src="img/NTTコミュニケーションズ.png"/>
       </div>
     </div>
+    <request-detail/>
   </div>
 </template>
 <script>
 import Request from './request.vue'
+import RequestDetail from './request-detail.vue'
 const Rate = {
   template:[
     '<div class="rating">',
@@ -82,7 +84,8 @@ export default {
   },
   components:{
     'rate-parts':Rate,
-    'mi-request':Request
+    'mi-request':Request,
+    'request-detail':RequestDetail
   },
   watch:{
     'store.description'(v){
