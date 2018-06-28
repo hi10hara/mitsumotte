@@ -41,9 +41,7 @@
         <textarea class="textlines" name="comment" cols="30" rows="8"></textarea>
         <p>写真<br>
         <input type="file" name="file"></p>
-        ここに写真の表示をお願いします。
         <p><input type="button" value="依頼" id="button1"></p>
-        <p><input type="button" value="閉じる" id="close1"></p>
       </div>
     </div>
   </div>
