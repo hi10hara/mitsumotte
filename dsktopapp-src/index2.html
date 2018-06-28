@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mitsumotte</title>
     <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="bundle/bundle.css">
     <!-- update the version number as needed -->
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
@@ -15,6 +15,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script src="lib/vue.js"></script>
     <script>
       // Initialize Firebase
       var config = {
@@ -30,7 +31,40 @@
   </head>
   
 <body>
-  <div id="app"></div>
-<script src="./bundle/bundle.js"></script>
+  <div id="app">
+
+    <h1 class="header"><img class="header-icon" src="img/logo.png"/></h1>
+    <div class="main">
+      <div class="requests">
+        <transition name="loading">
+            <div class="requests-loading" v-if="requestsLoading">
+              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+          </transition>
+          <mi-request class="req" v-for="(r, key) in requests" :key="key" :request="r" :id="key"></mi-request>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/x-template" id="r">
+    <div class="req">
+      <div class="req-head" :class="request.status">
+      </div>
+      <div class="req-body">
+        <div>{{request.name}}</div>
+        <div>予算上限:{{request.request['budget-limit']}}</div>
+        {{request.request.title}}
+        <div class="request-top-img">
+          <img class="top-img" :src="request.imgs[0]">
+        </div>
+        <div class="applying">現在交渉中: {{request.applying}}</div>
+      </div>
+    </div>
+  </script>
+<script src="js/main.js"></script>
+
+
 </body>
 </html>
