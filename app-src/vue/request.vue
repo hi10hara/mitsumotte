@@ -37,7 +37,7 @@
       <div class="request-page">
         <p>カテゴリ<br>
         <input type="text" name="category" size="30"></p>
-        <p>コメント<br>
+        <p>考慮点<br>
         <textarea class="textlines" name="comment" cols="30" rows="8"></textarea>
         <p>写真<br>
         <input type="file" name="file"></p>
