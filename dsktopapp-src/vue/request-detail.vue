@@ -11,13 +11,14 @@
       カテゴリー：腕時計
     </div>
      <div class="comment">
-       コメント</br>
+       説明
        ガラス割れました。
        見積もりお願いいたします。
      </div>
+<div class="top-img">
+</div>
      <div class="timeline">
 <body>
-    
     <div id="your_container">
 
         <!-- チャットの外側部分① -->
@@ -27,9 +28,9 @@
                 <!--ステータス-->
                 <div id="bms_chat_user_status">
                     <!--ステータスアイコン-->
-                    <div id="bms_status_icon">●</div>
+                    <div id="bms_status_icon">✉</div>
                     <!--ユーザー名-->
-                    <div id="bms_chat_user_name">ユーザー</div>
+                    <div id="chat-title">メッセージ</div>
                 </div>
             </div>
 
@@ -59,20 +60,19 @@
 
             <!-- テキストボックス、送信ボタン④ -->
             <div id="bms_send">
-                <textarea id="bms_send_message"></textarea>
-                <div id="bms_send_btn">送信</div>
+                     <input type="hidden" name="item_id" value="m96627376588">
+          <textarea type="text" name="body" value="" class="textarea" cols="60" rows="8"></textarea>
+          <button type="submit" class="btn" >
+          <i class="icon-message"></i>
+          <span>取引メッセージを送る</span>
+          </button>
             </div>
         </div>
     </div>
 </body>
 
     </div>  
-      <input type="hidden" name="item_id" value="m96627376588">
-          <textarea type="text" name="body" value="" class="textarea" cols="60" rows="8"></textarea>
-          <button type="submit" class="btn" >
-          <i class="icon-message"></i>
-          <span>取引メッセージを送る</span>
-          </button>
+ 
     </div>
   </div>
 </template>
