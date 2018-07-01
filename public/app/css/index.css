@@ -34,30 +34,7 @@ input, textarea{
   padding:0.5vw;
 }
 
-.splash{
-  background-image:linear-gradient(top, rgb(252, 189, 30) 0%, #E4E4E4 100%);
-  background-image:-webkit-linear-gradient(top, rgb(252, 189, 30)  0%, #E4E4E4 100%);
-  position:fixed;
-  top:0;
-  left:0;
-  height:100%;
-  width:100%;
-  transform-origin:0 0 0;
-  z-index:1000;
-}
-.logo{
-	margin-top:15%;
-	width:100%;
-}
-.splash-enter-active, .splash-leave-active{
-  transition:all 0.5s ease;
-  opacity:1;
-  transform:scaleY(1);
-}
-.splash-enter, .splash-leave-to{
-  opacity:0;
-  transform:scaleY(0);
-}
+
 .main-content{
   height:calc(100% - 10vw);
   position:relative;

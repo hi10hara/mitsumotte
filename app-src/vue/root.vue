@@ -1,4 +1,5 @@
 <style>
+
 .category-icon{
   display:inline-block;
   background-size:contain;
@@ -23,11 +24,7 @@
 
 <template>
   <div id="app">
-   <transition name="splash">
-      <div class="splash" v-if="!uncovered">
-        <img class="logo" src="../img/logo.png"/>
-      </div>
-    </transition>
+    <login/>
     <div :class="moveDirection" class="main-content">
       <transition name="swipe">
         <div class="category-body" v-if="body === 'category'">
@@ -77,6 +74,7 @@
 <script>
 import eventHub from '../js/event-hub'
 import RequestView from './request.vue'
+import Login from './login.vue'
 const views = [
   'category',
   'talk',
@@ -85,6 +83,7 @@ const views = [
 ]
 export default {
   components:{
+    Login,
     'request-view':RequestView
   },
     data(){

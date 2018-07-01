@@ -1,4 +1,4 @@
-const cacheName = 'weatherPWA-step-50-3'
+const cacheName = 'weatherPWA-step-50-4'
 const filesToCache = [
 ]
 

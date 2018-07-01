@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Root from '../vue/root.vue'
+import store from '../js/store.js'
 /*globals Hammer, Vue*/
 const app = {
   // Application Constructor
@@ -23,6 +24,7 @@ app.initialize();
 function startVue(){
   new Vue({
     el:'#app',
+    store,
     render(createElement){
       return createElement(Root)
     }
