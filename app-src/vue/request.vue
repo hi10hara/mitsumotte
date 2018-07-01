@@ -5,7 +5,7 @@
     left:0;
     width:100%;
     height:100%;
-    background-color:rgba(30,30,30, 0.8);
+    background-color:rgba(30,30,30, 0.2);
     z-index:10000;
   }
   .request{
@@ -18,6 +18,7 @@
     padding:5px;
     border-radius:5px;
     font-size: 18px;
+    box-shadow:0 0 5px 3px gray;
   }
   .request-page-top{
     text-align: center;
@@ -65,7 +66,15 @@
   .images{
     height:30%;
     border-bottom:solid 1px gray;
-    overflow-x:auto;
+    overflow-x:scroll;
+    white-space:nowrap;
+  }
+  .budget{
+    border:solid 1px gray;
+    padding:2px;
+    width:20%;
+    text-align:right;
+
   }
 </style>
 <template>
@@ -82,15 +91,15 @@
     </div>
     <div>
       <label class="select-img">
-        写真を添付(３枚まで)
+        写真を添付(3枚まで)
         <span class="icon-image"/>
-        <input type="file" class="file-input" @change="addImage">
+        <input type="file" class="file-input" @change="addImage" accept="image/*">
       </label>
     </div>
     <div class="images">
       <attach-image v-for="ai in attachImages" :key="ai.name" :file="ai"/>
     </div>
-    <div>予算上限 <input type="number" min="0" v-model.number="badgetLimit"/></div>
+    <div>予算上限 <input class="budget" type="number" min="0" v-model.number="badgetLimit"/></div>
     <p><input type="button" value="依頼" id="button1"></p>
     </div>
   </div>
@@ -127,6 +136,10 @@ export default {
     addImage(ev){
       const [tgImage] = ev.target.files
       this.attachImages.push(tgImage)
+    },
+    removeImage(file){
+      const ind = this.attachImages.findIndex(f=> f === file)
+      this.$delete(this.attachImages, ind)
     }
   }
 }
