@@ -20,31 +20,55 @@
   .request-page-top{
     text-align: center;
     font-size: 30px;
+    height:30px;
+    position:relative;
   }
   .request-page{
     text-align: left;
     font-size: 18px;
   }
-
+  .req-enter-active, .req-leave-active{
+    transition:opacity .3s ease;
+    opacity:1;
+  }
+  .req-enter, .req-leave-to{
+    opacity:0;
+  }
+  .close-btn{
+    position:absolute;
+    right:0;
+    top:0;
+    border:solid 1px gray;
+    font-size:20px;
+    height:100%;
+    width:30px;
+  }
+  .request-detail{
+    width:100%;
+    resize:none;
+    height:50px;
+  }
 </style>
 <template>
+  <transition name="req">
   <div class="request-cover" v-if="show">
     <div class="request">
-      
       <div class="request-page-top">
         依頼詳細
+        <input type="button" class="close-btn" value="X" @click="cancel"/>
       </div>
       <div class="request-page">
-        <p>カテゴリ<br>
-        <input type="text" name="category" size="30"></p>
-        <p>考慮点<br>
-        <textarea class="textlines" name="comment" cols="30" rows="8"></textarea>
+        <div>カテゴリ {{category.caption}}</div>
+        <div>
+          <textarea class="request-detail" placeholder="修理内容についてざっくりと説明"></textarea>
+        </div>
         <p>写真<br>
         <input type="file" name="file"></p>
         <p><input type="button" value="依頼" id="button1"></p>
       </div>
     </div>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -52,6 +76,7 @@ import eventHub from '../js/event-hub.js'
 export default {
   data(){
     return {
+      category:{},
       show:false
     }
   },
@@ -59,8 +84,13 @@ export default {
     eventHub.$on('show-request-view', this.showMe)
   },
   methods:{
-    showMe(){
+    showMe(category){
+      this.category = category
       this.show = true
+    },
+    cancel(){
+      this.category = {}
+      this.show = false
     }
   }
 }

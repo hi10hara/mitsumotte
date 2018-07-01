@@ -33,7 +33,7 @@
         <div class="category-body" v-if="body === 'category'">
           <input type="text" class="category-filter" placeholder="カテゴリ検索" v-model="searchText">
           <div class="categories">
-            <div v-for="c in filterdCategories" class="cate-item" :key="c.name" @click="showRequest">
+            <div v-for="c in filterdCategories" class="cate-item" :key="c.name" @click="showRequest(c)">
                 <div><div class="category-icon" :style="{'background-image':`url(data:image/png;base64,${c.icon})`}"/>
                   <span class="cate-caption">{{c.caption}}</span>
                 </div>
@@ -148,8 +148,8 @@ export default {
       uncover:function(){
         this.uncovered = true
       },
-      showRequest(){
-        eventHub.$emit('show-request-view')
+      showRequest(category){
+        eventHub.$emit('show-request-view', category)
       }
     }
 
