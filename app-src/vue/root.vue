@@ -98,7 +98,7 @@ export default {
       }
     },
     created:function(){
-      setTimeout(this.uncover, 3000)
+      setTimeout(this.uncover, 2000)
     },
     mounted(){
       this.initDatabase()

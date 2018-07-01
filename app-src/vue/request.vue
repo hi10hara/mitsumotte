@@ -6,6 +6,7 @@
     width:100%;
     height:100%;
     background-color:rgba(30,30,30, 0.8);
+    z-index:10000;
   }
   .request{
     background-color:white;
@@ -16,16 +17,13 @@
     margin-top:20px;
     padding:5px;
     border-radius:5px;
+    font-size: 18px;
   }
   .request-page-top{
     text-align: center;
     font-size: 30px;
     height:30px;
     position:relative;
-  }
-  .request-page{
-    text-align: left;
-    font-size: 18px;
   }
   .req-enter-active, .req-leave-active{
     transition:opacity .3s ease;
@@ -48,6 +46,27 @@
     resize:none;
     height:50px;
   }
+  .select-img{
+    display:inline-block;
+    height:8vw;
+    text-align:center;
+    vertical-align:middle;
+    border-radius:1px;
+  }
+  .file-input{
+    display:none;
+  }
+  .icon-image{
+    font-size:8vw;
+  }
+  .icon-image:before{
+    vertical-align:bottom;
+  }
+  .images{
+    height:30%;
+    border-bottom:solid 1px gray;
+    overflow-x:auto;
+  }
 </style>
 <template>
   <transition name="req">
@@ -57,15 +76,22 @@
         依頼詳細
         <input type="button" class="close-btn" value="X" @click="cancel"/>
       </div>
-      <div class="request-page">
-        <div>カテゴリ {{category.caption}}</div>
-        <div>
-          <textarea class="request-detail" placeholder="修理内容についてざっくりと説明"></textarea>
-        </div>
-        <p>写真<br>
-        <input type="file" name="file"></p>
-        <p><input type="button" value="依頼" id="button1"></p>
-      </div>
+    <div>カテゴリ {{category.caption}}</div>
+    <div>
+      <textarea class="request-detail" placeholder="修理内容についてざっくりと説明"></textarea>
+    </div>
+    <div>
+      <label class="select-img">
+        写真を添付(３枚まで)
+        <span class="icon-image"/>
+        <input type="file" class="file-input" @change="addImage">
+      </label>
+    </div>
+    <div class="images">
+      <attach-image v-for="ai in attachImages" :key="ai.name" :file="ai"/>
+    </div>
+    <div>予算上限 <input type="number" min="0" v-model.number="badgetLimit"/></div>
+    <p><input type="button" value="依頼" id="button1"></p>
     </div>
   </div>
   </transition>
@@ -73,12 +99,18 @@
 
 <script>
 import eventHub from '../js/event-hub.js'
+import AttachImage from './attach-image.vue'
 export default {
   data(){
     return {
       category:{},
-      show:false
+      show:false,
+      attachImages:[],
+      badgetLimit:0
     }
+  },
+  components:{
+    AttachImage
   },
   created(){
     eventHub.$on('show-request-view', this.showMe)
@@ -91,6 +123,10 @@ export default {
     cancel(){
       this.category = {}
       this.show = false
+    },
+    addImage(ev){
+      const [tgImage] = ev.target.files
+      this.attachImages.push(tgImage)
     }
   }
 }
