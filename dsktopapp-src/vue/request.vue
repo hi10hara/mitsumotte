@@ -1,4 +1,37 @@
 <style>
+
+.req{
+  background-color:white;
+  position:relative;
+  border-radius:10px;
+  width:40%;
+  height:300px;
+  margin:16px 8px;
+  box-shadow:3px 2px 3px gray;
+  overflow:hidden;
+  display:inline-block;
+}
+.req-head{
+  background-color:#ffc81e;
+  padding:5px;
+}
+.req-head .req-time{
+  font-size:10px;
+  color:gray;
+}
+.req-head.closed{
+  background-color:rgb(222,222,222);
+}
+.req-body{
+  padding:2px;
+}
+.req .applying{
+  position:absolute;
+  bottom:0;
+  color:rgb(100,150,100);
+  right:15px;
+  font-size:13px;
+}
 .request-top-img{
   height:200px;
 }

@@ -19,7 +19,12 @@ function main(){
     const categoryRef = database.ref(`requests/${category}`)
     categoryRef.on('value', requests=>{
        const reqs = requests.val()
-       topVm.requests = reqs
+       const revKeys = Object.keys(reqs).reverse()
+       const revReqs = revKeys.reduce((b,c)=>{
+        b[c] = reqs[c]
+        return b
+       },{})
+       topVm.requests = revReqs
        topVm.requestsLoading = false
     })
   })

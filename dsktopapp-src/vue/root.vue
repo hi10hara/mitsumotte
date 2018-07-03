@@ -2,6 +2,13 @@
 input, textarea,select{
   font-family:inherit;
 }
+.requests{
+  position:relative;
+  height:100%;
+  float:left;
+  width:70%;
+  overflow-y:scroll;
+}
 </style>
 <template>
   <div id="app">

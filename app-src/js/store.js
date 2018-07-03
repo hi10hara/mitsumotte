@@ -80,7 +80,7 @@ const store = new Vuex.Store({
       const imgPaths =[]
       await images.reduce((b, img, count)=>{
         return b.then(()=>{
-          const imgStorage = firebase.storage().ref('request-img/${Date.now()}-${count}/')
+          const imgStorage = firebase.storage().ref(`request-img/${Date.now()}-${count}/`)
           return new Promise(resolve=>{
             return imgStorage.put(img)
               .then(snapshot=>{
