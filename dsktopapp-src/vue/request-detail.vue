@@ -116,12 +116,13 @@ line-height: 1.3em;
 }
 </style>
 <template>
-<div class="cover">
+<div class="cover" v-if="show">
   <div class="request-detail">
     <div class="request-header">
       <div class="title">
         腕時計の見積依頼
       </div>
+      <div class="close-btn" @click="close">X</div>
       <div class="comment">
         説明
         ガラス割れました。
@@ -157,5 +158,15 @@ line-height: 1.3em;
 </template>
 <script>
 export default {
+  data(){
+    return {
+      show:false
+    }
+  },
+  mehtods:{
+    close(){
+      this.show = false
+    }
+  }
 }
 </script>

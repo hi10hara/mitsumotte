@@ -57,11 +57,12 @@
 </style>
 <template>
   <transition name="splash">
-  <div class="login" v-if="!logined">
+  <div class="login" v-if="!user.uid">
     <img class="logo" src="../img/logo.png"/>
     <div class="version">Version {{version}}</div>
     <input type="text" :disabled="logining" class="mail" v-model="account" placeholder="アカウント/メールアドレス" @keydown.enter="login">
     <input type="password" :disabled="logining" class="password" v-model="password" placeholder="パスワード" @keydown.enter="login">
+    <input type="text" :disabled="logining" class="display-name" v-model="displayName" placeholder="ユーザ名" @keydown.enter="login">
     <button @click="login" :disabled="logining">ログイン</button>
     <div class="login-message">{{loginMessage}}</div>
   </div>
@@ -73,28 +74,31 @@ export default {
   date(){
     return {
       account:'',
-      password:''
+      password:'',
+      displayName:''
     }
   },
   computed:mapState([
     'version',
-    'logined',
     'logining',
+    'user',
     'loginMessage'
   ]),
   created(){
     this.$store.commit('loadLast')
     this.account = this.$store.state.account
     this.password = this.$store.state.password
+    this.displayName = this.$store.state.displayName
   },
   methods:{
     login(){
-      if(!this.account || !this.password){
+      if(!this.account || !this.password || !this.displayName){
         return
       }
       this.$store.dispatch('login', {
         account:this.account,
-        password:this.password
+        password:this.password,
+        displayName:this.displayName
       })
     }
   }

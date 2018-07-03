@@ -82,12 +82,12 @@
   <div class="request-cover" v-if="show">
     <div class="request">
       <div class="request-page-top">
-        依頼詳細
+        見積もり詳細
         <input type="button" class="close-btn" value="X" @click="cancel"/>
       </div>
     <div>カテゴリ {{category.caption}}</div>
     <div>
-      <textarea class="request-detail" placeholder="修理内容についてざっくりと説明"></textarea>
+      <textarea class="request-detail" v-model="requestDetail" placeholder="修理内容についてざっくりと説明"></textarea>
     </div>
     <div>
       <label class="select-img">
@@ -99,14 +99,18 @@
     <div class="images">
       <attach-image v-for="ai in attachImages" :key="ai.name" :file="ai"/>
     </div>
-    <div>予算上限 <input class="budget" type="number" min="0" v-model.number="badgetLimit"/></div>
-    <p><input type="button" value="依頼" id="button1"></p>
+    <div>予算上限 <input class="budget" type="number" min="0" v-model.number="limitBudget"/></div>
+    <div>期限<input class="limitDate" type="date" v-model="limitDate"/></div>
+    <input type="button" value="依頼" @click="request">
+    <div class="message">{{requestMessage}}</div>
     </div>
   </div>
   </transition>
 </template>
 
 <script>
+import moment from 'moment'
+import {mapState} from 'vuex'
 import eventHub from '../js/event-hub.js'
 import AttachImage from './attach-image.vue'
 export default {
@@ -114,10 +118,15 @@ export default {
     return {
       category:{},
       show:false,
+      requestDetail:'',
+      limitDate:moment().add(1, 'week').format('YYYY-MM-DD'),
       attachImages:[],
-      badgetLimit:0
+      limitBudget:0,
     }
   },
+  computed:mapState({
+    requestMessage:'requestMessage'
+  }),
   components:{
     AttachImage
   },
@@ -126,6 +135,7 @@ export default {
   },
   methods:{
     showMe(category){
+      this.attachImages = []
       this.category = category
       this.show = true
     },
@@ -140,6 +150,19 @@ export default {
     removeImage(file){
       const ind = this.attachImages.findIndex(f=> f === file)
       this.$delete(this.attachImages, ind)
+    },
+    async request(){
+      if(!this.requestDetail || !this.limitBudget || !this.attachImages.length || !this.limitDate){
+        return this.$store.commit('setRequestMessage', '入力はすべて埋めてください')
+      }
+      await this.$store.dispatch('request', {
+        category:this.category.name,
+        detail:this.requestDetail,
+        limitBudget:this.limitBudget,
+        limitDate:this.limitDate,
+        images:this.attachImages
+      })
+      this.show = false
     }
   }
 }
