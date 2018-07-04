@@ -15,7 +15,7 @@
   border-radius:5px;
   padding:5px;
   z-index:100000;
-  margin:auto;
+  margin:5% auto;
 }
 .request-header{
   height:30px;
@@ -127,52 +127,61 @@ line-height: 1.3em;
 }
 .close-btn{
   float: right;
-		width:32px;
-		height:32px;
-		border:0;
-		background-color:black;
-		border-radius:32px;
-		transform:scale(0.5);
-		cursor:pointer;
-	}
-	.close-btn:before{
-		content:"";
-		position:absolute;
-		display:inline-block;
-		top:4px;
-		left:13px;
-		width:6px;
-		height:24px;
-		border:0;
-		margin:0;
-		padding:0;
-		background-color:white;
-		-moz-transform:rotate(45deg);
-		-webkit-transform:rotate(45deg);
-		transform:rotate(45deg);
-	}
-	.close-btn:after{
-		content:"";
-		position:absolute;
-		display:inline-block;
-		top:4px;
-		left:13px;
-		width:6px;
-		height:24px;
-		border:0;
-		margin:0;
-		padding:0;
-		background-color:white;
-		-moz-transform:rotate(-45deg);
-		-webkit-transform:rotate(-45deg);
-		transform:rotate(-45deg);
-	}
-	.close-btn:hover{
-		background-color:red;
-	}
-  
+  width:32px;
+  height:32px;
+  border:0;
+  background-color:black;
+  border-radius:32px;
+  transform:scale(0.5);
+  cursor:pointer;
+}
+.close-btn:before{
+  content:"";
+  position:absolute;
+  display:inline-block;
+  top:4px;
+  left:13px;
+  width:6px;
+  height:24px;
+  border:0;
+  margin:0;
+  padding:0;
+  background-color:white;
+  -moz-transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+  transform:rotate(45deg);
+}
+.close-btn:after{
+  content:"";
+  position:absolute;
+  display:inline-block;
+  top:4px;
+  left:13px;
+  width:6px;
+  height:24px;
+  border:0;
+  margin:0;
+  padding:0;
+  background-color:white;
+  -moz-transform:rotate(-45deg);
+  -webkit-transform:rotate(-45deg);
+  transform:rotate(-45deg);
+}
+.close-btn:hover{
+  background-color:red;
+}
+.req-enter-active, .req-leave-active{
+  transition:all .3s ease;
+  transform:translateY(0);
+  opacity:1;
+}
+.req-enter, .req-leave-to{
+  transform:translateY(-100%);
+  opacity:0;
+}
 </style>
 <template>
+<transition name="req">
 <div class="cover" v-if="request">
   <div class="request-detail">
     <div class="request-header">
@@ -183,7 +192,7 @@ line-height: 1.3em;
       {{request.detail}}
     </div>
     <div class="images">
-      <img v-for="img in request.imgs" :src="img" class="request-img" :key="img">
+      <img v-for="img in request.imgs" :src="img" class="request-img" :key="img" @click="closeUp(img)">
     </div>
     <div class="chat-body">
       <div class="message left">
@@ -211,6 +220,7 @@ line-height: 1.3em;
     </div>
   </div>
 </div>
+</transition>
 </template>
 <script>
 import eventHub from '../js/event-hub.js'
@@ -229,6 +239,9 @@ export default {
     },
     close(){
       this.request = null
+    },
+    closeUp(img){
+      eventHub.$emit('show-photo', img)
     }
   }
 }

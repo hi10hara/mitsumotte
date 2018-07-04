@@ -4,16 +4,20 @@
   background-color:white;
   position:relative;
   border-radius:10px;
-  width:40%;
-  height:300px;
   margin:16px 8px;
-  box-shadow:3px 2px 3px gray;
-  overflow:hidden;
+  box-shadow:2px 1px 6px gray;
+  overflow:visible;
   display:inline-block;
+  flex-basis:500px;
+  height:300px;
 }
 .req-head{
+  border-radius:10px 10px 0 0;
   background-color:#ffc81e;
+  position: relative;
+  overflow:visible;
   padding:5px;
+  height:30px;
 }
 .req-head .req-time{
   font-size:10px;
@@ -33,30 +37,43 @@
   font-size:20px;
 }
 .request-top-img{
+  margin:auto;
+  text-align:center;
   height:200px;
-  
 }
 .top-img{
   height:100%;
+  margin:0px 10px;
+  box-shadow:2px 2px 3px 1px gray;
+  border-radius:5px;
 }
-.new-img{
-  float: right;
-  height: 15%;
-  width: 13%;
-  margin-right: 1%;
-  margin-top: 0%;
+.new-icon{
+  position:absolute;
+  right:30px;
+  top:-10px;
+  height: 30px;
+  width: 30px;
+  text-align:center;
+  color:white;
+  font-size:25px;
+  margin-bottom:30px;
+  font-weight:bold;
+  background-color:red;
+  border-radius:100%;
 }
 </style>
 
 <template>
   <div class="req" @click="showDetail">
-    <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span> <img class="new-img" src="../../public/img/ico_new_icon1.png"></div>
+    <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span>
+      <div v-if="isNewReq" class="new-icon">!</div>
+    </div>
     <div>{{request.detail}}</div>
     <div class="req-body">
       <div>予算上限:{{request.limitBudget}}</div>
       {{request.title}}
       <div class="request-top-img">
-        <img class="top-img" :src="request.imgs[0]">
+        <img class="top-img" v-for="img in request.imgs" :src="img" :key="img">
       </div>
       <div class="applying">現在交渉中: {{request.applying}}</div>
     </div>
@@ -64,15 +81,24 @@
 </template>
 <script>
 import eventHub from '../js/event-hub.js'
+const aHour = 1000 * 60 * 60
 export default {
   created(){
-    console.log(this.request)
+    
   },
   props:{
     id:String,
     request:Object
   },
+  computed:{
+    isNewReq(){
+      const n = new Date(this.request.requested_at).getTime()
+      const diffFromNow = Date.now() - n
+      return diffFromNow < aHour
+    }
+  },
   methods:{
+
     showDetail(){
       eventHub.$emit('show-detail', this.request)
     }

@@ -8,6 +8,9 @@ input, textarea,select{
   float:left;
   width:70%;
   overflow-y:scroll;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 </style>
 <template>
@@ -19,6 +22,7 @@ input, textarea,select{
     </div></h1>
     <div class="main">
       <div class="requests">
+        <div style="clear:both"></div>
         <transition name="loading">
             <div class="requests-loading" v-if="requestsLoading">
               <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -50,11 +54,13 @@ input, textarea,select{
       </div>
     </div>
     <request-detail/>
+    <photo-viewer/>
   </div>
 </template>
 <script>
 import Request from './request.vue'
 import RequestDetail from './request-detail.vue'
+import PhotoViewer from './photo-viewer.vue'
 import Rate from './rate.vue'
 
 export default {
@@ -74,7 +80,8 @@ export default {
   components:{
     'rate-parts':Rate,
     'mi-request':Request,
-    'request-detail':RequestDetail
+    RequestDetail,
+    PhotoViewer
   },
   watch:{
     'store.description'(v){
