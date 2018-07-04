@@ -41,7 +41,7 @@
 </style>
 
 <template>
-  <div class="req">
+  <div class="req" @click="showDetail">
     <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span></div>
     <div>{{request.detail}}</div>
     <div class="req-body">
@@ -55,6 +55,7 @@
   </div>
 </template>
 <script>
+import eventHub from '../js/event-hub.js'
 export default {
   created(){
     console.log(this.request)
@@ -62,6 +63,11 @@ export default {
   props:{
     id:String,
     request:Object
+  },
+  methods:{
+    showDetail(){
+      eventHub.$emit('show-detail', this.request)
+    }
   }
 }
 </script>

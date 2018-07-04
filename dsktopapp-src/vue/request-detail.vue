@@ -114,19 +114,25 @@ line-height: 1.3em;
     border-radius: 30px 30px 0px 30px;/*右下だけ尖らせて吹き出し感を出す*/
     margin-left: 50px;/*右側の発言だとわかる様に、吹き出し左側に隙間を入れる*/
 }
+.request-img{
+  border-top: #333;
+  height:250px;
+}
 </style>
 <template>
-<div class="cover" v-if="show">
+<div class="cover" v-if="request">
   <div class="request-detail">
     <div class="request-header">
-      <div class="title">
-        腕時計の見積依頼
+        {{request.detail}}
       </div>
+      <img class="request-img" :src="request.imgs[0]"/>
+      <div class="title">
       <div class="close-btn" @click="close">X</div>
       <div class="comment">
         説明
         ガラス割れました。
         見積もりお願いいたします。
+        ｊｓｂｓｊｋｂｂｄｓんｌｂｓｄｎ
       </div>
     </div>
     <div class="chat-body">
@@ -157,15 +163,22 @@ line-height: 1.3em;
 </div>
 </template>
 <script>
+import eventHub from '../js/event-hub.js'
 export default {
   data(){
     return {
-      show:false
+      request:null
     }
   },
-  mehtods:{
+  created(){
+    eventHub.$on('show-detail', this.showDetail)
+  },
+  methods:{
+    showDetail(request){
+      this.request = request
+    },
     close(){
-      this.show = false
+      this.request = null
     }
   }
 }
