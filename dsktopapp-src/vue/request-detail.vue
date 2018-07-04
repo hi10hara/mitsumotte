@@ -18,13 +18,15 @@
   margin:auto;
 }
 .request-header{
-  height:300px;
+  height:30px;
+  float: left;
+  width: 80%;
 }
 .chat-body{
   height:calc(100% - 400px);
 }
 .chat-console{
-  height:80px;
+  height:50px;
 }
 /* タイムライン部分③ */
 .chat-body{
@@ -56,16 +58,15 @@
 /* 回り込みを解除 */
 .clear {
     clear: both; /* 左メッセージと右メッセージの回り込み(float)の効果の干渉を防ぐために必要（これが無いと、自分より下のメッセージにfloatが影響する） */
-
 }
-
 /* テキストエリア、送信ボタン④ */
 .message-send-btn{
-  background-color:#eee;/*タイムラインの色と同じにする*/
+  background-color:rgb(253, 175, 57);/*タイムラインの色と同じにする*/
   border: 1px solid #ddd;
   height: 100%;
   vertical-align: top;
   padding: 4px;
+  color: rgb(253, 249, 249)
 }
 .chat-input{
   width:80%;
@@ -75,7 +76,6 @@
   padding:5px;
   font-size:20px;
 }
-
 /*
 *追加
 */
@@ -114,26 +114,76 @@ line-height: 1.3em;
     border-radius: 30px 30px 0px 30px;/*右下だけ尖らせて吹き出し感を出す*/
     margin-left: 50px;/*右側の発言だとわかる様に、吹き出し左側に隙間を入れる*/
 }
-.request-img{
-  border-top: #333;
-  height:250px;
+.images{
+  text-align:center;
 }
+.request-img{
+  top:0;
+  height:250px;
+  float: center;
+}
+.comment{
+  font-size: 15px;
+}
+.close-btn{
+  float: right;
+		width:32px;
+		height:32px;
+		border:0;
+		background-color:black;
+		border-radius:32px;
+		transform:scale(0.5);
+		cursor:pointer;
+	}
+	.close-btn:before{
+		content:"";
+		position:absolute;
+		display:inline-block;
+		top:4px;
+		left:13px;
+		width:6px;
+		height:24px;
+		border:0;
+		margin:0;
+		padding:0;
+		background-color:white;
+		-moz-transform:rotate(45deg);
+		-webkit-transform:rotate(45deg);
+		transform:rotate(45deg);
+	}
+	.close-btn:after{
+		content:"";
+		position:absolute;
+		display:inline-block;
+		top:4px;
+		left:13px;
+		width:6px;
+		height:24px;
+		border:0;
+		margin:0;
+		padding:0;
+		background-color:white;
+		-moz-transform:rotate(-45deg);
+		-webkit-transform:rotate(-45deg);
+		transform:rotate(-45deg);
+	}
+	.close-btn:hover{
+		background-color:red;
+	}
+  
 </style>
 <template>
 <div class="cover" v-if="request">
   <div class="request-detail">
     <div class="request-header">
-        {{request.detail}}
-      </div>
-      <img class="request-img" :src="request.imgs[0]"/>
-      <div class="title">
       <div class="close-btn" @click="close">X</div>
-      <div class="comment">
-        説明
-        ガラス割れました。
-        見積もりお願いいたします。
-        ｊｓｂｓｊｋｂｂｄｓんｌｂｓｄｎ
-      </div>
+    </div>
+    <div style="clear:both"></div>
+    <div class="detail">
+      {{request.detail}}
+    </div>
+    <div class="images">
+      <img v-for="img in request.imgs" :src="img" class="request-img" :key="img">
     </div>
     <div class="chat-body">
       <div class="message left">

@@ -30,19 +30,27 @@
   bottom:0;
   color:rgb(100,150,100);
   right:15px;
-  font-size:13px;
+  font-size:20px;
 }
 .request-top-img{
   height:200px;
+  
 }
 .top-img{
   height:100%;
+}
+.new-img{
+  float: right;
+  height: 15%;
+  width: 13%;
+  margin-right: 1%;
+  margin-top: 0%;
 }
 </style>
 
 <template>
   <div class="req" @click="showDetail">
-    <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span></div>
+    <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span> <img class="new-img" src="../../public/img/ico_new_icon1.png"></div>
     <div>{{request.detail}}</div>
     <div class="req-body">
       <div>予算上限:{{request.limitBudget}}</div>
