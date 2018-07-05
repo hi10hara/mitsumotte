@@ -31,21 +31,25 @@
   opacity:0;
   transform:scaleY(0);
 }
-.login>input{
+input{
   text-align:center;
-  width:80%;
   font-size:100%;
-  padding:10px;
-  border-radius:5px;
+  padding:5px;
+  border-radius:3px;
   border:solid 1px rgb(200,200,200);
   background-color:white;
 }
+.login>input{
+  width:80%;
+}
 .login>button{
-  text-align:center;
   margin-top:30px;
-  width:40%;
+}
+button, input[type=button]{
+  text-align:center;
+  min-width:40%;
   padding:10px;
-  border-radius:5px;
+  border-radius:3px;
   border:none;
   box-shadow:0 2px 2px 2px rgb(200,200,200);
   background-color:white;

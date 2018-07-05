@@ -9,6 +9,7 @@
     z-index:10000;
   }
   .request{
+    color:rgb(50,50,50);
     background-color:white;
     height:80%;
     width:90%;
@@ -22,7 +23,7 @@
   }
   .request-page-top{
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
     height:30px;
     position:relative;
   }
@@ -39,8 +40,9 @@
     top:0;
     border:solid 1px gray;
     font-size:20px;
-    height:100%;
-    width:30px;
+    height:50px;
+    min-width:50px !important;
+    width:50px;
   }
   .request-detail{
     width:100%;
@@ -70,11 +72,19 @@
     white-space:nowrap;
   }
   .budget{
-    border:solid 1px gray;
+    border:none;
+    border-bottom:solid 1px gray;
+    border-radius:0;
     padding:2px;
-    width:20%;
+    width:40%;
+    box-shadow:none;
     text-align:right;
+    margin-bottom:2px;
   }
+.send-request{
+  margin-top:10px;
+  background-color:rgb(255,233,233);
+}
 .lds-roller {
   display: inline-block;
   position: relative;
@@ -175,7 +185,7 @@
     </div>
     <div>
       <label class="select-img">
-        写真を添付(3枚まで)
+        写真を添付
         <span class="icon-image"/>
         <input type="file" class="file-input" @change="addImage" accept="image/*">
       </label>
@@ -183,9 +193,9 @@
     <div class="images">
       <attach-image v-for="ai in attachImages" :key="ai.name" :file="ai"/>
     </div>
-    <div>予算上限 <input class="budget" type="number" min="0" v-model.number="limitBudget"/></div>
-    <div>期限<input class="limitDate" type="date" v-model="limitDate"/></div>
-    <input type="button" value="依頼" @click="request" :disabled="requesting">
+    <div>予算上限 ¥<input class="budget" min="0" v-model="limitBudgetStr" style="width:50%"/></div>
+    <div>見積もり期限<input class="limitDate" type="date" v-model="limitDate"/></div>
+    <input type="button" class="send-request" value="見積もり依頼を出す" @click="request" :disabled="requesting">
     <div class="req-spinner" v-if="requesting">
       <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     </div>
@@ -212,9 +222,20 @@ export default {
       requesting:false
     }
   },
-  computed:mapState({
-    requestMessage:'requestMessage'
-  }),
+  computed:{
+     limitBudgetStr:{
+      get(){
+        const rev = (''+this.limitBudget).split('').reverse().join('')
+        return rev.replace(/(...)(?=.)/g, '$1,').split('').reverse().join('')
+      },
+      set(v){
+        this.limitBudget = parseInt(v.replace(/\D/g,''),10) || 0
+      }
+    },
+    ...mapState({
+      requestMessage:'requestMessage'
+    })
+  },
   components:{
     AttachImage
   },

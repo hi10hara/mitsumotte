@@ -10,6 +10,7 @@ const store = new Vuex.Store({
       displayName:'',
       uid:''
     },
+    requests:[],
     account:'',
     password:'',
     displayName:'',
@@ -61,13 +62,16 @@ const store = new Vuex.Store({
         })
         .then(()=>{
           const u = firebase.auth().currentUser
-          console.log(u)
           state.user = u
           state.logined = true
+          const userDataRef = firebase.database().ref(`/userdata/${state.user.uid}`)
+          userDataRef.on('value', sn=>{
+            const v = sn.val()
+            console.log('User request', v)
+          })
         })
         .catch(e=>{
           state.loginMessage = 'ログインできませんでした'
-          console.error(e)
         })
         .then(()=>{
           state.logining = false
@@ -93,15 +97,19 @@ const store = new Vuex.Store({
         })
       }, Promise.resolve())
       const requests = firebase.database().ref(`requests/${requestData.category}`)
-      const newId = state.user.uid + '-' + Date.now()
-      return requests.child(newId).set({
+      const pushKey = requests.push({
         applying:0,
         name:state.user.displayName,
         status:'open', 
         requested_at:new Date().toISOString(),
         imgs:imgPaths,
         ...requestData
-      })
+      }).key
+      store.dispatch('appendMyRequest', pushKey)
+    },
+    appendMyRequest(store, key){
+      store.state.requests.push(key)
+      firebase.database().ref(`/userdata/${store.state.user.uid}`).set(store.state.requests)
     }
   }
 })
