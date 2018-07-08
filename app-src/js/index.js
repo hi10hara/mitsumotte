@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import './filter.js'
 import Root from '../vue/root.vue'
 import store from '../js/store.js'
 /*globals Hammer, Vue*/

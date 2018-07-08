@@ -13,8 +13,8 @@
   font-size:5vw;
 }
 .logo{
-	margin-top:15%;
-	width:100%;
+  margin-top:15%;
+  width:100%;
 }
 .version{
   text-align:right;

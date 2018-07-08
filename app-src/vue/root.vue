@@ -39,9 +39,7 @@
         </div>
       </transition>
       <transition name="swipe">
-        <div class="talk-body" v-if="body=== 'talk'">
-          業者とのトークを並べる予定
-        </div>
+        <mt-talks v-if="body === 'talk'"/>
       </transition>
       <transition name="swipe">
         <div class="talk-body" v-if="body=== 'hists'">
@@ -75,6 +73,7 @@
 import eventHub from '../js/event-hub'
 import RequestView from './request.vue'
 import Login from './login.vue'
+import MtTalks from './mt-talks.vue'
 const views = [
   'category',
   'talk',
@@ -84,7 +83,8 @@ const views = [
 export default {
   components:{
     Login,
-    'request-view':RequestView
+    RequestView,
+    MtTalks
   },
     data(){
       return {

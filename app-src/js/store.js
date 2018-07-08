@@ -11,6 +11,7 @@ const store = new Vuex.Store({
       uid:''
     },
     requests:[],
+    myReqs:{},
     account:'',
     password:'',
     displayName:'',
@@ -64,11 +65,7 @@ const store = new Vuex.Store({
           const u = firebase.auth().currentUser
           state.user = u
           state.logined = true
-          const userDataRef = firebase.database().ref(`/userdata/${state.user.uid}`)
-          userDataRef.on('value', sn=>{
-            const v = sn.val()
-            console.log('User request', v)
-          })
+          return store.dispatch('getMyRequests')
         })
         .catch(e=>{
           state.loginMessage = 'ログインできませんでした'
@@ -76,6 +73,29 @@ const store = new Vuex.Store({
         .then(()=>{
           state.logining = false
         })
+    },
+    async getMyRequests(store){
+      const {state} = store
+      const userDataRef = firebase.database().ref(`/userdata/${state.user.uid}`)
+      userDataRef.on('value', sn=>{
+        const v = sn.val()
+        state.requests = v
+        state.requests.forEach(r=>{
+          const rRef = firebase.database().ref(`/requests/${r}`)
+          rRef.on('value', (reqSn)=>{
+            store.dispatch('updateRequest', reqSn)
+          })
+        })
+      })
+    },
+    async updateRequest(store, snapshot){
+      const {state:{myReqs}} = store
+      const {key} = snapshot
+      const value = snapshot.val()
+      if(!value){
+        return
+      }
+      Vue.set(myReqs, key, value)
     },
     async request(store, requestData){
       const {state} = store
@@ -105,7 +125,12 @@ const store = new Vuex.Store({
         imgs:imgPaths,
         ...requestData
       }).key
-      store.dispatch('appendMyRequest', pushKey)
+      const requestPath = `${requestData.category}/${pushKey}`
+      store.dispatch('appendMyRequest', requestPath)
+      firebase.database().ref(`requests/` + requestPath).on('value', sn=>{
+        store.dispatch('updateRequest', sn)
+      })
+
     },
     appendMyRequest(store, key){
       store.state.requests.push(key)

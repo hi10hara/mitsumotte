@@ -244,6 +244,8 @@ export default {
   },
   methods:{
     showMe(category){
+      this.limitBudget = 0
+      this.requestDetail = ''
       this.attachImages = []
       this.category = category
       this.show = true
@@ -267,6 +269,7 @@ export default {
       this.requesting = true
       await this.$store.dispatch('request', {
         category:this.category.name,
+        categoryCaption:this.category.caption,
         detail:this.requestDetail,
         limitBudget:this.limitBudget,
         limitDate:this.limitDate,
