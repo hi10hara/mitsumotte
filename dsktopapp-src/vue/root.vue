@@ -1,6 +1,7 @@
 <style>
 input, textarea,select{
   font-family:inherit;
+  box-sizing:border-box;
 }
 .requests{
   position:relative;
@@ -62,21 +63,18 @@ import Request from './request.vue'
 import RequestDetail from './request-detail.vue'
 import PhotoViewer from './photo-viewer.vue'
 import Rate from './rate.vue'
-
+import {mapState} from 'vuex'
 export default {
   data(){
     return {
       editDesc:false,
       requestsLoading:true,
-      store:{
-        name:'',
-        description:'',
-        reputs:[
-        ]
-      },
       requests:{}
     }
   },
+  computed:mapState({
+    store:'store'
+  }),
   components:{
     'rate-parts':Rate,
     'mi-request':Request,

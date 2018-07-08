@@ -9,6 +9,7 @@
   background-color:rgb(0,0,0,.5);
 }
 .request-detail{
+  text-align:left;
   width:1000px;
   height:80%;
   background-color:white;
@@ -17,25 +18,36 @@
   z-index:100000;
   margin:5% auto;
 }
-.request-header{
-  height:30px;
-  float: left;
-  width: 80%;
+.request-detail .tip{
+  font-size:15px;
+  display:inline-block;
+  width:40%;
+  color:darkgray;
+}
+.request-detail .detail-wrap{
+  margin:3px;
+  box-shadow:0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+  background-color:white;
+}
+.request-detail .detail{
+  height:100px;
+  white-space: pre-wrap;
 }
 .chat-body{
   height:calc(100% - 400px);
 }
 .chat-console{
-  height:50px;
+  height:100px;
 }
 /* タイムライン部分③ */
 .chat-body{
+  margin:10px 0;
   overflow-y: scroll;
   width: 100%;
   border-right: 1px solid #ddd;
   border-left: 1px solid #ddd;
   background-color: #eee;
-  box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.2) inset;/*ヘッダーの下に影を入れる*/
+  box-shadow: 0px 2px 2px 0px rgba(0,0,0,.2);/*ヘッダーの下に影を入れる*/
 }
   /* メッセージ全般のスタイル */
 .message {
@@ -114,61 +126,42 @@ line-height: 1.3em;
     border-radius: 30px 30px 0px 30px;/*右下だけ尖らせて吹き出し感を出す*/
     margin-left: 50px;/*右側の発言だとわかる様に、吹き出し左側に隙間を入れる*/
 }
-.images{
+.request-info{
+  height:250px;
+  width:30%;
+  font-size:20px;
+  float:left;
+  padding:0px 5px;
+}
+.request-info>div{
+  border-bottom:solid 1px gray;
+}
+.request-images{
+  height:250px;
+  width:70%;
+  float:left;
   text-align:center;
 }
 .request-img{
   top:0;
-  height:250px;
-  float: center;
+  height:100%;
 }
 .comment{
   font-size: 15px;
 }
+.request-header{
+  position:relative;
+}
 .close-btn{
-  float: right;
-  width:32px;
-  height:32px;
+  position:absolute;
+  margin-top:15px;
+  margin-right:15px;
+  right:0;
+  top:0;
+  width:50px;
+  height:50px;
   border:0;
-  background-color:black;
-  border-radius:32px;
-  transform:scale(0.5);
   cursor:pointer;
-}
-.close-btn:before{
-  content:"";
-  position:absolute;
-  display:inline-block;
-  top:4px;
-  left:13px;
-  width:6px;
-  height:24px;
-  border:0;
-  margin:0;
-  padding:0;
-  background-color:white;
-  -moz-transform:rotate(45deg);
-  -webkit-transform:rotate(45deg);
-  transform:rotate(45deg);
-}
-.close-btn:after{
-  content:"";
-  position:absolute;
-  display:inline-block;
-  top:4px;
-  left:13px;
-  width:6px;
-  height:24px;
-  border:0;
-  margin:0;
-  padding:0;
-  background-color:white;
-  -moz-transform:rotate(-45deg);
-  -webkit-transform:rotate(-45deg);
-  transform:rotate(-45deg);
-}
-.close-btn:hover{
-  background-color:red;
 }
 .req-enter-active, .req-leave-active{
   transition:all .3s ease;
@@ -186,36 +179,26 @@ line-height: 1.3em;
   <div class="request-detail">
     <div class="request-header">
       <div class="close-btn" @click="close">X</div>
-    </div>
-    <div style="clear:both"></div>
-    <div class="detail">
-      {{request.detail}}
-    </div>
-    <div class="images">
-      <img v-for="img in request.imgs" :src="img" class="request-img" :key="img" @click="closeUp(img)">
+      <div class="request-info">
+        <div class="user-name"><span class="tip">ユーザ名:</span>{{request.name}}</div>
+        <div class="budget"><span class="tip">予算上限:</span>{{request.limitBudget | formatCurrency}}</div>
+        <div class="limit"><span class="tip">見積もり期限:</span>{{request.limitDate}}</div>
+        <div class="detail-wrap"><span class="tip">見積もり概要</span>
+          <div class="detail">{{request.detail}}</div>
+        </div>
+      </div>
+      <div class="request-images">
+        <img v-for="img in request.imgs" :src="img" class="request-img" :key="img" @click="closeUp(img)">
+      </div>
+      <div style="clear:both;"/>
     </div>
     <div class="chat-body">
-      <div class="message left">
-        <div class="message_box">
-          <div class="message_content">
-            <div class="message_text">ほうほうこりゃー便利じゃないか</div>
-          </div>
-        </div>
-      </div>
-      <div class="clear"></div>
-      <div class="message right">
-        <div class="message_box">
-          <div class="message_content">
-            <div class="message_text">うん、まあまあいけとるな</div>
-          </div>
-        </div>
-      </div>
-      <div class="clear"></div>
+      <chat-mess v-for="m in myChat" :key="m.id"/>
     </div>
     <div class="chat-console">
-      <textarea class="chat-input"></textarea>
-      <button class="message-send-btn">
-        取引メッセージを送る
+      <textarea class="chat-input" v-model="messageContent"/>
+      <button class="message-send-btn" @click="sendChatMessage">
+        チャットメッセージ送信
       </button>
     </div>
   </div>
@@ -227,11 +210,20 @@ import eventHub from '../js/event-hub.js'
 export default {
   data(){
     return {
-      request:null
+      request:null,
+      messageContent:''
     }
   },
   created(){
     eventHub.$on('show-detail', this.showDetail)
+  },
+  computed:{
+    myChat(){
+      if(!this.request.chat || !this.request.chat[this.$store.company.name]){
+        return []
+      }
+      return this.request.chat[this.$store.company.name]
+    }
   },
   methods:{
     showDetail(request){
@@ -242,6 +234,16 @@ export default {
     },
     closeUp(img){
       eventHub.$emit('show-photo', img)
+    },
+    sendChatMessage(){
+      const m = this.messageContent.trim()
+      if(!m){
+        return
+      }
+      this.$store.dispatch('sendChatMessage', {
+        message:m,
+        path:''
+      })
     }
   }
 }

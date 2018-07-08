@@ -3,7 +3,6 @@
 .req{
   background-color:white;
   position:relative;
-  border-radius:10px;
   margin:16px 8px;
   box-shadow:2px 1px 6px gray;
   overflow:visible;
@@ -12,7 +11,6 @@
   height:300px;
 }
 .req-head{
-  border-radius:10px 10px 0 0;
   background-color:#ffc81e;
   position: relative;
   overflow:visible;
@@ -70,7 +68,7 @@
     </div>
     <div>{{request.detail}}</div>
     <div class="req-body">
-      <div>予算上限:{{request.limitBudget}}</div>
+      <div>予算上限:{{request.limitBudget | formatCurrency}}</div>
       {{request.title}}
       <div class="request-top-img">
         <img class="top-img" v-for="img in request.imgs" :src="img" :key="img">
@@ -83,12 +81,12 @@
 import eventHub from '../js/event-hub.js'
 const aHour = 1000 * 60 * 60
 export default {
-  created(){
-    
-  },
   props:{
     id:String,
     request:Object
+  },
+  created(){
+    console.log(this.id)
   },
   computed:{
     isNewReq(){
