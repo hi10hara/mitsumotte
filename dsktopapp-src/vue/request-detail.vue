@@ -193,7 +193,7 @@ line-height: 1.3em;
       <div style="clear:both;"/>
     </div>
     <div class="chat-body">
-      <chat-mess v-for="m in myChat" :key="m.id"/>
+      <chat-mess v-for="m in myChat" :key="m.id" :m="m" :id="path" type="vendor"/>
     </div>
     <div class="chat-console">
       <textarea class="chat-input" v-model="messageContent"/>
@@ -207,26 +207,38 @@ line-height: 1.3em;
 </template>
 <script>
 import eventHub from '../js/event-hub.js'
+import ChatMess from '../../app-src/vue/chat-mess.vue'
 export default {
   data(){
     return {
+      id:'',
       request:null,
       messageContent:''
     }
+  },
+  components:{
+    ChatMess
   },
   created(){
     eventHub.$on('show-detail', this.showDetail)
   },
   computed:{
+    path(){
+      const {store} = this.$store.state
+      return `${store.category}/${this.id}/chat/${this.$store.state.storeId}`
+
+    },
     myChat(){
-      if(!this.request.chat || !this.request.chat[this.$store.company.name]){
+      console.log(this.request.chat)
+      if(!this.request.chat || !this.request.chat[this.$store.state.storeId]){
         return []
       }
-      return this.request.chat[this.$store.company.name]
+      return this.request.chat[this.$store.state.storeId]
     }
   },
   methods:{
-    showDetail(request){
+    showDetail(id, request){
+      this.id = id
       this.request = request
     },
     close(){
@@ -241,9 +253,10 @@ export default {
         return
       }
       this.$store.dispatch('sendChatMessage', {
-        message:m,
-        path:''
+        id:this.id,
+        message:m
       })
+      this.messageContent = ''
     }
   }
 }

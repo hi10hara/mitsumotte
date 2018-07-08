@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 const LOGINFO = 'loginfo'
-
+window.database = firebase.database()
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
@@ -76,12 +76,15 @@ const store = new Vuex.Store({
     },
     async getMyRequests(store){
       const {state} = store
-      const userDataRef = firebase.database().ref(`/userdata/${state.user.uid}`)
+      const userDataRef = window.database.ref(`/userdata/${state.user.uid}`)
       userDataRef.on('value', sn=>{
         const v = sn.val()
+        if(!v){
+          return
+        }
         state.requests = v
         state.requests.forEach(r=>{
-          const rRef = firebase.database().ref(`/requests/${r}`)
+          const rRef = window.database.ref(`/requests/${r}`)
           rRef.on('value', (reqSn)=>{
             store.dispatch('updateRequest', reqSn)
           })
@@ -116,7 +119,7 @@ const store = new Vuex.Store({
           })
         })
       }, Promise.resolve())
-      const requests = firebase.database().ref(`requests/${requestData.category}`)
+      const requests = window.database.ref(`requests/${requestData.category}`)
       const pushKey = requests.push({
         applying:0,
         name:state.user.displayName,
@@ -134,7 +137,10 @@ const store = new Vuex.Store({
     },
     appendMyRequest(store, key){
       store.state.requests.push(key)
-      firebase.database().ref(`/userdata/${store.state.user.uid}`).set(store.state.requests)
+      window.database.ref(`/userdata/${store.state.user.uid}`).set(store.state.requests)
+    },
+    sendChatMessage(store, {path,data}){
+      window.database.ref(`/requests/${path}`).push(data)
     }
   }
 })

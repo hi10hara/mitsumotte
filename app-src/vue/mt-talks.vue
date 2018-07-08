@@ -1,6 +1,12 @@
+<style>
+.talk-body{
+  height:calc(100% - 40px);
+  overflow-y:scroll;
+}
+</style>
 <template>
   <div class="talk-body">
-    <one-req v-for="(r, key) in myReqs" :key="key" :req="r"/>
+    <one-req v-for="(r, key) in myReqs" :key="key" :id="r.category + '/' + key" :req="r"/>
   </div>
 </template>
 <script>

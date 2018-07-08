@@ -85,9 +85,6 @@ export default {
     id:String,
     request:Object
   },
-  created(){
-    console.log(this.id)
-  },
   computed:{
     isNewReq(){
       const n = new Date(this.request.requested_at).getTime()
@@ -96,9 +93,8 @@ export default {
     }
   },
   methods:{
-
     showDetail(){
-      eventHub.$emit('show-detail', this.request)
+      eventHub.$emit('show-detail', this.id, this.request)
     }
   }
 }

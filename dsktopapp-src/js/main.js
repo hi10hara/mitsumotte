@@ -3,6 +3,7 @@ import Root from '../vue/root.vue'
 import nofify from './notification.js'
 import './filter.js'
 import store from './store.js'
+import recursiveFetch from './recursive-fetch.js'
 const anHour = 1000 * 60 * 60
 Vue.filter('dateFormat',(_v)=>{
   const v = new Date(_v)
@@ -10,18 +11,21 @@ Vue.filter('dateFormat',(_v)=>{
 })
 
 /*globals Vue*/
-const myCompanyName = store.state.store.name
+const myCompanyName = store.state.storeId
 function main(){
-  var database = window.firebase.database()
+  window.database = window.firebase.database()
   var companiesRef = database.ref(`/companies/${myCompanyName}`)
   companiesRef.on('value', companies=>{
     const storeInfo = companies.val()
     const topVm = window.rootVm.$children[0]
     store.commit('setStore', storeInfo)
     const {category} = storeInfo
-    const categoryRef = database.ref(`requests/${category}`)
+    const categoryRef = database.ref(`/requests/${category}`)
     categoryRef.on('value', requests=>{
        const reqs = requests.val()
+       if(!reqs){
+         return
+       }
        const revKeys = Object.keys(reqs).sort((a,b)=>{
          const ar = reqs[a].requested_at
          const br = reqs[b].requested_at
@@ -36,7 +40,8 @@ function main(){
         b[c] = reqs[c]
         return b
        },{})
-       topVm.requests = revReqs
+      topVm.requests =  recursiveFetch(topVm.requests, revReqs)
+      //  topVm.requests = revReqs
        topVm.requestsLoading = false
        const [topKey] = revKeys
        const topReq = revReqs[topKey]
