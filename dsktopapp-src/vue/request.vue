@@ -14,7 +14,7 @@
   background-color:#ffc81e;
   position: relative;
   overflow:visible;
-  padding:5px;
+  padding-left:35px;
   height:30px;
 }
 .req-head .req-time{
@@ -59,11 +59,25 @@
   background-color:red;
   border-radius:100%;
 }
+.unreads{
+  width:25px;
+  height:25px;
+  font-weight:bold;
+  position:absolute;
+  left:2px;
+  top:0;
+  text-align:center;
+  background-color:rgb(255, 20, 50);
+  color:white;
+  border-radius:100%;
+}
 </style>
 
 <template>
   <div class="req" @click="showDetail">
-    <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span>
+    <div class="req-head" :class="request.status">
+      <span class="unreads" v-if="unreads">{{unreads}}</span>
+      {{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span>
       <div v-if="isNewReq" class="new-icon">!</div>
     </div>
     <div>{{request.detail}}</div>
@@ -86,6 +100,17 @@ export default {
     request:Object
   },
   computed:{
+    unreads(){
+      if(!this.request.chat){
+        return 0
+      }
+      const chat = this.request.chat[this.$store.state.storeId]
+      console.log(chat)
+      if(!chat){
+        return 0
+      }
+      return Object.keys(chat).filter(m=> !chat[m].vendor).length
+    },
     isNewReq(){
       const n = new Date(this.request.requested_at).getTime()
       const diffFromNow = Date.now() - n

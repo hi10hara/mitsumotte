@@ -17,12 +17,27 @@
   border-radius:2px;
   width:80%;
 }
+.chat-name{
+  position:relative;
+}
+.unreads{
+  position:absolute;
+  left:5px;
+  top:2px;
+  display:inline-block;
+  height:20px;
+  width:20px;
+  text-align:center;
+  color:white;
+  background-color:rgb(255, 20, 50);
+  border-radius:100%;
+}
 </style>
 <template>
   <div class="chat" @click="fold = !fold">
-    <div>{{store.name}}</div>
+    <div class="chat-name"><span class="unreads" v-if="unreads">{{unreads}}</span>{{store.name}}</div>
     <transition name="chat">
-      <div class="chat-content" v-show="!fold">
+      <div class="chat-content" v-if="!fold">
         <chat-mess v-for="(m, key) in chat" :key="key" :id="id + '/' + key" :m="m" type="user"/>
         <textarea class="chat-input" v-model="chatContent" @keydown.enter="sendMessage" @click.stop/>
         <button @click.stop="sendMessage">送信</button>
@@ -57,6 +72,19 @@ export default {
       type:String
     }
   },
+  watch:{
+    unreads(v ,old){
+      console.log('beep sound', v, old)
+      if(old < v){
+        this.beep()
+      }
+    }
+  },
+  computed:{
+    unreads(){
+      return Object.keys(this.chat).filter(k=>!this.chat[k].user).length
+    }
+  },
   created(){
     const storeRef = window.database.ref(`/companies/${this.storeName}`)
     storeRef.once('value', sn=>{
@@ -64,11 +92,16 @@ export default {
     })
   },
   methods:{
+    beep(){
+      navigator.vibrate([300, 50, 100, 20, 100])
+      document.querySelector('#beep').play()
+    },
     sendMessage(){
       const mc = this.chatContent.trim()
       if(!mc){
         return
       }
+      this.chatContent =''
       this.$store.dispatch('sendChatMessage', {
         path:this.id,
         data:{
