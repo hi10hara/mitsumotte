@@ -193,7 +193,7 @@ line-height: 1.3em;
       <div style="clear:both;"/>
     </div>
     <div class="chat-body">
-      <chat-mess v-for="m in myChat" :key="m.id" :m="m" :id="path" type="vendor"/>
+      <chat-mess v-for="(m, key) in myChat" :key="key" :m="m" :id="path + '/' + key" type="vendor"/>
     </div>
     <div class="chat-console">
       <textarea class="chat-input" v-model="messageContent"/>
@@ -229,7 +229,6 @@ export default {
 
     },
     myChat(){
-      console.log(this.request.chat)
       if(!this.request.chat || !this.request.chat[this.$store.state.storeId]){
         return []
       }
