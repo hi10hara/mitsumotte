@@ -28,29 +28,19 @@
 <template>
   <div class="store-selector-cover" v-if="!$store.state.storeId">
     <div class="store-selector">
-      <div class="store-item" @click="selectStore(store)" v-for="store in stores" :key="store.id">{{store.name}}</div>
+      <div class="store-item" @click="selectStore(name)" v-for="(store, name) in stores" :key="name">{{store.name}}</div>
     </div>
   </div>
 </template>
-<script>
+<script>  
+import {mapState} from 'vuex'
 export default {
-  data(){
-    return {
-      stores:[
-        {
-          id:'takahashi_tokeiten',
-          name:'高橋時計店'
-        },
-        {
-          id:'ukurerenotakahashi',
-          name:'ウクレレの高橋'
-        }
-      ]
-    }
-  },
+  computed:mapState({
+    stores:'stores'
+  }),
   methods:{
-    selectStore(s){
-      this.$store.commit('setStoreId', s.id)
+    selectStore(name){
+      this.$store.commit('setStoreId', name)
       this.$store.dispatch('initDatabase')
     }
   }

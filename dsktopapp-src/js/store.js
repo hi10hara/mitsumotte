@@ -3,9 +3,9 @@ import Vuex from 'vuex'
 import nofify from './notification.js'
 import recursiveFetch from './recursive-fetch.js'
 const anHour = 1000 * 60 * 60
-
+const firebase = window.initFirebase()
 Vue.use(Vuex)
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state:{
     storeId:'',
     store:{
@@ -13,7 +13,8 @@ export default new Vuex.Store({
       category:'repair-watch'
     },
     requests:{},
-    requestsLoading:false
+    requestsLoading:false,
+    stores:{}
   },
   mutations:{
     setStoreId(state, id){
@@ -24,12 +25,18 @@ export default new Vuex.Store({
     }
   },
   actions:{
+    getStores({state}){
+      window.database = firebase.database()
+      database.ref('/companies').on('value', sn=>{
+        const companies = sn.val()
+        console.log(companies)
+        state.stores = companies
+      })
+    },
     initDatabase(store){
       const {state} = store
       state.requestsLoading = true
       const myCompanyName = store.state.storeId
-      const firebase = window.initFirebase()
-      window.database = firebase.database()
       const companiesRef = database.ref(`/companies/${myCompanyName}`)
       companiesRef.on('value', companies=>{
         const storeInfo = companies.val()
@@ -85,3 +92,6 @@ export default new Vuex.Store({
     }
   }
 })
+
+store.dispatch('getStores')
+export default store
