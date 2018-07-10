@@ -89,7 +89,6 @@ export default {
   },
   watch:{
     unreads(v ,old){
-      console.log('beep sound', v, old)
       if(old < v){
         this.beep()
       }
@@ -108,8 +107,8 @@ export default {
   },
   methods:{
     beep(){
-      navigator.vibrate([300, 50, 100, 20, 100])
       document.querySelector('#beep').play()
+      navigator.vibrate([300, 50, 100, 20, 100])
     },
     sendMessage(){
       const mc = this.chatContent.trim()
