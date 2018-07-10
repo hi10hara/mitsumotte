@@ -17,15 +17,19 @@
     <script defer src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
     <script>
       // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyB9vdXsq1o_XAa_8kjFP2tZyARRIg9F1X0",
-        authDomain: "digicom-low-1111-06268460.firebaseapp.com",
-        databaseURL: "https://digicom-low-1111-06268460.firebaseio.com",
-        projectId: "digicom-low-1111-06268460",
-        storageBucket: "digicom-low-1111-06268460.appspot.com",
-        messagingSenderId: "430203856083"
-      };
-      firebase.initializeApp(config);
+      window.initFirebase = ()=>{
+        const config = {
+          apiKey: "AIzaSyB9vdXsq1o_XAa_8kjFP2tZyARRIg9F1X0",
+          authDomain: "digicom-low-1111-06268460.firebaseapp.com",
+          databaseURL: "https://digicom-low-1111-06268460.firebaseio.com",
+          projectId: "digicom-low-1111-06268460",
+          storageBucket: "digicom-low-1111-06268460.appspot.com",
+          messagingSenderId: "430203856083"
+        };
+        firebase.initializeApp(config);
+        return firebase
+      }
+      
     </script>
   </head>
   

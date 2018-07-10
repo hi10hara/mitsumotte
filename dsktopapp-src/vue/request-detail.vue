@@ -33,20 +33,16 @@
   height:100px;
   white-space: pre-wrap;
 }
-.chat-body{
-  height:calc(100% - 400px);
-}
 .chat-console{
   height:100px;
 }
-/* タイムライン部分③ */
 .chat-body{
+  height:calc(100% - 400px);
   margin:10px 0;
   overflow-y: scroll;
   width: 100%;
   border-right: 1px solid #ddd;
   border-left: 1px solid #ddd;
-  background-color: #eee;
   box-shadow: 0px 2px 2px 0px rgba(0,0,0,.2);/*ヘッダーの下に影を入れる*/
 }
   /* メッセージ全般のスタイル */

@@ -16,6 +16,7 @@ input, textarea,select{
 </style>
 <template>
   <div id="app">
+    <store-selector/>
     <h1 class="header"><img class="header-icon" src="img/logo.png"/>
     <div class="search-box">
       <input name="keywords2" id="keywords2" placeholder="検索" type="text" /> 
@@ -59,6 +60,7 @@ input, textarea,select{
   </div>
 </template>
 <script>
+import StoreSelector from './store-selector.vue'
 import Request from './request.vue'
 import RequestDetail from './request-detail.vue'
 import PhotoViewer from './photo-viewer.vue'
@@ -67,15 +69,16 @@ import {mapState} from 'vuex'
 export default {
   data(){
     return {
-      editDesc:false,
-      requestsLoading:true,
-      requests:{}
+      editDesc:false
     }
   },
   computed:mapState({
-    store:'store'
+    store:'store',
+    requests:'requests',
+    requestsLoading:'requestsLoading'
   }),
   components:{
+    StoreSelector,
     'rate-parts':Rate,
     'mi-request':Request,
     RequestDetail,
