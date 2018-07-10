@@ -3,8 +3,12 @@
   margin:3px;
   box-shadow:var(--box-shadow);
 }
-.chat-content{
+.chat-content-wrap{
   transform-origin:top;
+}
+.chat-content{
+  max-height:300px;
+  overflow-y:scroll;
 }
 .chat-enter-active, .chat-leave-active{
   transition:transform .3s ease;
@@ -14,8 +18,10 @@
   transform:scaleY(0);
 }
 .chat-input{
+  vertical-align: top;
   border-radius:2px;
   width:80%;
+  height:40px;
 }
 .chat-name{
   position:relative;
@@ -32,20 +38,29 @@
   background-color:rgb(255, 20, 50);
   border-radius:100%;
 }
+.chat-send{
+  vertical-align: top;
+  min-width:15%;
+  width:15% !important;
+  height:40px;
+}
 </style>
 <template>
   <div class="chat" @click="fold = !fold">
     <div class="chat-name"><span class="unreads" v-if="unreads">{{unreads}}</span>{{store.name}}</div>
-    <transition name="chat">
-      <div class="chat-content" v-if="!fold">
-        <chat-mess v-for="(m, key) in chat" :key="key" :id="id + '/' + key" :m="m" type="user"/>
-        <textarea class="chat-input" v-model="chatContent" @keydown.enter="sendMessage" @click.stop/>
-        <button @click.stop="sendMessage">送信</button>
+    <transition name="chat" @after-enter="scrollToEnd">
+      <div class="chat-content-wrap" v-if="!fold">
+        <div class="chat-content" ref="chat">
+          <chat-mess v-for="(m, key) in chat" :key="key" :id="id + '/' + key" :m="m" type="user"/>
+        </div>
+        <textarea class="chat-input" v-model="chatContent" @keydown.enter="sendMessage" @click.stop @input="detectSendKeyword"/>
+        <button class="chat-send" @click.stop="sendMessage">送信</button>
       </div>
     </transition>
   </div>
 </template>
 <script>
+import eventHub from '../js/event-hub.js'
 import ChatMess from './chat-mess.vue'
 export default {
   data(){
@@ -112,8 +127,21 @@ export default {
           at:Date.now()
         }
       })
+    },
+    scrollToEnd(){
+      console.log('scrooltoend')
+      const {chat} = this.$refs
+      chat.scrollTop = chat.clientHeight
+    },
+    detectSendKeyword(ev){
+      const v = this.chatContent
+      if(soshin.test(v)){
+        this.chatContent = this.chatContent.replace(soshin, '$1')
+        this.sendMessage()
+      }
     }
   }
 }
+const soshin = /(.)送信$/
 </script>
 

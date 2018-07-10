@@ -5,7 +5,7 @@
 }
 </style>
 <template>
-  <div class="talk-body">
+  <div class="talk-body" ref="talkBody">
     <one-req v-for="(r, key) in myReqs" :key="key" :id="r.category + '/' + key" :req="r"/>
   </div>
 </template>

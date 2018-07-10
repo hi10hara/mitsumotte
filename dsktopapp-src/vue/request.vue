@@ -105,7 +105,6 @@ export default {
         return 0
       }
       const chat = this.request.chat[this.$store.state.storeId]
-      console.log(chat)
       if(!chat){
         return 0
       }
