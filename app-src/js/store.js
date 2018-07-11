@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import visionRequest from './vision-request.js'
 const LOGINFO = 'loginfo'
+const FILTER_TIMEOUT = 30000
 window.database = firebase.database()
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
-    version:'1.0.0',
+    version:'1.1.0',
     user:{
       displayName:'',
       uid:''
@@ -17,7 +19,11 @@ const store = new Vuex.Store({
     displayName:'',
     loginMessage:'',
     logining:false,
-    requestMessage:''
+    requestMessage:'',
+    categories:[],
+    filterTexts:[],
+    storedImage:null,
+    scanning:false
   },
   mutations:{
     loadLast(state){
@@ -43,6 +49,15 @@ const store = new Vuex.Store({
       setTimeout(()=>{
         state.requestMessage = ''
       }, 4000)
+    },
+    setCategories(state, categories){
+      state.categories = categories
+    },
+    eraseStoredImage(state){
+      state.storedImage = null
+    },
+    eraseFilter(state){
+      state.filterTexts = []
     }
   },
   actions:{
@@ -61,11 +76,12 @@ const store = new Vuex.Store({
             displayName
           })
         })
-        .then(()=>{
+        .then(async ()=>{
           const u = firebase.auth().currentUser
           state.user = u
           state.logined = true
-          return store.dispatch('getMyRequests')
+          await store.dispatch('initDatabase')
+          await store.dispatch('getMyRequests')
         })
         .catch(e=>{
           state.loginMessage = 'ログインできませんでした'
@@ -73,6 +89,17 @@ const store = new Vuex.Store({
         .then(()=>{
           state.logining = false
         })
+    },
+    async initDatabase(store){
+      const database = window.database
+      const cateRef = database.ref('categories')
+      return new Promise(resolve=>{
+        cateRef.on('value', v=>{
+          store.commit('setCategories',v.val())
+          resolve()
+        })
+      })
+      
     },
     async getMyRequests(store){
       const {state} = store
@@ -141,6 +168,30 @@ const store = new Vuex.Store({
     },
     sendChatMessage(store, {path,data}){
       window.database.ref(`/requests/${path}`).push(data)
+    },
+    async takeDirectPhoto(store, file){
+      store.state.scanning = true
+      const resultJson = await visionRequest(file)
+      const {responses:[{labelAnnotations}]} = resultJson
+      console.log(labelAnnotations)
+      const array = labelAnnotations.map(r=>r.description)
+      store.state.filterTexts = array
+      setTimeout(()=>{
+        store.commit('eraseFilter')
+      }, FILTER_TIMEOUT)
+      store.state.storedImage = file
+      store.state.scanning = false
+    }
+  },
+  getters:{
+    filteredCategories(state){
+      const {filterTexts:fts} = state
+      if(!fts.length){
+        return state.categories
+      }
+      return state.categories.filter(c=>{
+        return (c.keywords || []).some(k=> fts.includes(k))
+      })
     }
   }
 })

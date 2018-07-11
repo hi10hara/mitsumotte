@@ -31,5 +31,5 @@ module.exports = async function visionRequest(img){
     body:JSON.stringify(json)
   })
   const resultJson = await res.json()
-  console.log(resultJson)
+  return resultJson
 }

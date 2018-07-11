@@ -187,7 +187,7 @@
       <label class="select-img">
         写真を添付
         <span class="icon-image"/>
-        <input type="file" class="file-input" @change="addImage" accept="image/*">
+        <input type="file" class="file-input" multiple="true" @change="addImage" accept="image/*">
       </label>
     </div>
     <div class="images">
@@ -247,6 +247,10 @@ export default {
       this.limitBudget = 0
       this.requestDetail = ''
       this.attachImages = []
+      if(this.$store.state.storedImage){
+        this.attachImages.push(this.$store.state.storedImage)
+        this.$store.commit('eraseStoredImage')
+      }
       this.category = category
       this.show = true
     },
@@ -255,8 +259,10 @@ export default {
       this.show = false
     },
     addImage(ev){
-      const [tgImage] = ev.target.files
-      this.attachImages.push(tgImage)
+      const {files} =  ev.target
+      Array.from(files).forEach(file=>{
+        this.attachImages.push(file)
+      })
     },
     removeImage(file){
       const ind = this.attachImages.findIndex(f=> f === file)

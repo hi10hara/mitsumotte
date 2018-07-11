@@ -25,7 +25,9 @@ input,textarea,button{
 .cate-caption{
   vertical-align:bottom;
 }
-
+.icon-camera{
+  color:rgb(50,50,50);
+}
 .direct-img{
   display:none;
 }
@@ -37,13 +39,13 @@ input,textarea,button{
     <div :class="moveDirection" class="main-content">
       <transition name="swipe">
         <div class="category-body" v-if="body === 'category'">
-          <input type="text" class="category-filter" placeholder="カテゴリ検索" v-model="searchText">
           <label class="direct-img-wrap">
+            <span>写真を取って絞り込み</span>
             <span class="icon-camera"/>
             <input type="file" class="direct-img" @change="takeDirectPhoto" accept="image/*" capture="camera"/>
           </label>
           <div class="categories">
-            <div v-for="c in filterdCategories" class="cate-item" :key="c.name" @click="showRequest(c)">
+            <div v-for="c in filteredCategories" class="cate-item" :key="c.name" @click="showRequest(c)">
                 <div><div class="category-icon" :style="{'background-image':`url(data:image/png;base64,${c.icon})`}"/>
                   <span class="cate-caption">{{c.caption}}</span>
                 </div>
@@ -80,6 +82,7 @@ input,textarea,button{
       </div>
     </div>
     <request-view/>
+    <visioning/>
   </div>
 </template>
 <script>
@@ -87,7 +90,8 @@ import eventHub from '../js/event-hub'
 import RequestView from './request.vue'
 import Login from './login.vue'
 import MtTalks from './mt-talks.vue'
-import visionRequest from '../js/vision-request.js'
+import {mapGetters} from 'vuex'
+import Visioning from './visioning.vue'
 const views = [
   'category',
   'talk',
@@ -96,6 +100,7 @@ const views = [
 ]
 export default {
   components:{
+    Visioning,
     Login,
     RequestView,
     MtTalks
@@ -106,15 +111,16 @@ export default {
         typeName:typeof cordova,
         uncovered:false,
         categories:[],
-        moveDirection:'left',
-        searchText:''
+        moveDirection:'left'
       }
     },
+    computed:mapGetters({
+      filteredCategories:'filteredCategories'
+    }),
     created:function(){
       setTimeout(this.uncover, 2000)
     },
     mounted(){
-      this.initDatabase()
       const h = new Hammer(this.$el)
       h.on('swipe', ev=>{
         const m = ev.velocity < 0 ? 1 : -1
@@ -130,28 +136,10 @@ export default {
         this.setBody(views[nowIndex])
       })
     },
-    computed:{
-      filterdCategories(){
-        const st = this.searchText
-        return this.categories.filter(t=>{
-          return t.caption.includes(st)
-        })
-      }
-    },
     methods:{
       takeDirectPhoto(ev){
         const [file] = ev.target.files
-        visionRequest(file)
-      },
-      initDatabase(){
-        const database = firebase.database();
-        const cateRef = database.ref('categories')
-        cateRef.on('value', v=>{
-          this.setCategories(v.val())
-        })
-      },
-      setCategories(v){
-        this.categories = v
+        this.$store.dispatch('takeDirectPhoto',file)
       },
       setBody(b){
         this.$nextTick(()=>this.body = b)
