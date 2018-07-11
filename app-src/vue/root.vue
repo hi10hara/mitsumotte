@@ -25,6 +25,10 @@ input,textarea,button{
 .cate-caption{
   vertical-align:bottom;
 }
+
+.direct-img{
+  display:none;
+}
 </style>
 
 <template>
@@ -34,6 +38,10 @@ input,textarea,button{
       <transition name="swipe">
         <div class="category-body" v-if="body === 'category'">
           <input type="text" class="category-filter" placeholder="カテゴリ検索" v-model="searchText">
+          <label class="direct-img-wrap">
+            <span class="icon-camera"/>
+            <input type="file" class="direct-img" @change="takeDirectPhoto" accept="image/*" capture="camera"/>
+          </label>
           <div class="categories">
             <div v-for="c in filterdCategories" class="cate-item" :key="c.name" @click="showRequest(c)">
                 <div><div class="category-icon" :style="{'background-image':`url(data:image/png;base64,${c.icon})`}"/>
@@ -79,6 +87,7 @@ import eventHub from '../js/event-hub'
 import RequestView from './request.vue'
 import Login from './login.vue'
 import MtTalks from './mt-talks.vue'
+import visionRequest from '../js/vision-request.js'
 const views = [
   'category',
   'talk',
@@ -130,6 +139,10 @@ export default {
       }
     },
     methods:{
+      takeDirectPhoto(ev){
+        const [file] = ev.target.files
+        visionRequest(file)
+      },
       initDatabase(){
         const database = firebase.database();
         const cateRef = database.ref('categories')
