@@ -40,9 +40,9 @@ input,textarea,button{
       <transition name="swipe">
         <div class="category-body" v-if="body === 'category'">
           <label class="direct-img-wrap">
-            <span>写真を取って絞り込み</span>
+            <span>写真を撮って絞り込み</span>
             <span class="icon-camera"/>
-            <input type="file" class="direct-img" @change="takeDirectPhoto" accept="image/*" capture="camera"/>
+            <input type="file" class="direct-img" @change="takeDirectPhoto" accept="image/*"/>
           </label>
           <div class="categories">
             <div v-for="c in filteredCategories" class="cate-item" :key="c.name" @click="showRequest(c)">
