@@ -7,7 +7,7 @@ window.database = firebase.database()
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
-    version:'1.1.0',
+    version:'1.1.1',
     user:{
       displayName:'',
       uid:''

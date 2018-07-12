@@ -169,7 +169,16 @@
     transform: rotate(360deg);
   }
 }
-
+.limit-budget{
+  width:50%;
+  display:inline-block;
+  border:none !important;
+  border-radius:0;
+  border-bottom:solid 1px gray !important;
+  height:25px;
+  text-align:right;
+  outline:none;
+}
 </style>
 <template>
   <transition name="req">
@@ -193,7 +202,9 @@
     <div class="images">
       <attach-image v-for="ai in attachImages" :key="ai.name" :file="ai"/>
     </div>
-    <div>予算上限 ¥<input class="budget" min="0" v-model="limitBudgetStr" style="width:50%"/></div>
+    <div>予算上限 <div class="limit-budget" v-if="!budgetInputMode" @click="setBudgetInputMode">¥{{limitBudgetStr}}</div>
+    <input type="number" ref="binput" class="limit-budget" v-else min="0" v-model.number="limitBudget" style="width:50%" @focusout="budgetInputMode=false"/>
+    </div>
     <div>見積もり期限<input class="limitDate" type="date" v-model="limitDate"/></div>
     <input type="button" class="send-request" value="見積もり依頼を出す" @click="request" :disabled="requesting">
     <div class="req-spinner" v-if="requesting">
@@ -216,10 +227,11 @@ export default {
       category:{},
       show:false,
       requestDetail:'',
-      limitDate:moment().add(1, 'week').format('YYYY-MM-DD'),
+      limitDate:moment().add(1, 'day').format('YYYY-MM-DD'),
       attachImages:[],
       limitBudget:0,
-      requesting:false
+      requesting:false,
+      budgetInputMode:false
     }
   },
   computed:{
@@ -227,9 +239,6 @@ export default {
       get(){
         const rev = (''+this.limitBudget).split('').reverse().join('')
         return rev.replace(/(...)(?=.)/g, '$1,').split('').reverse().join('')
-      },
-      set(v){
-        this.limitBudget = parseInt(v.replace(/\D/g,''),10) || 0
       }
     },
     ...mapState({
@@ -283,6 +292,13 @@ export default {
       })
       this.requesting = false
       this.show = false
+    },
+    setBudgetInputMode(){
+      this.budgetInputMode = true
+      this.$nextTick(()=>{
+        this.$refs.binput.focus()
+        this.$refs.binput.select()
+      })
     }
   }
 }
