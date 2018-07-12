@@ -54,12 +54,7 @@ div,input{
   top: 1px;  
 }  
 
-.requests{
-  position:relative;
-  height:100%;
-  float:left;
-  width:70%;
-}
+
 .ad{
   height: 40%;
   float: right;
@@ -120,62 +115,9 @@ div,input{
   width:100%;
   float:right;
 }
-.rating{
-  display:inline-block;
-  vertical-align:bottom;
-  position:relative;
-  width:125px;
-  height:25px;
-}
-.rate-base,.rate-cover{
-  z-index:100;
-  position:absolute;
-  top:0;
-  left:0;
-  height:100%;
-}
-.rate-base{
-  background-color:rgb(255, 230, 6);
-  width:0%;
-}
-.star{
-  width:25px;
-  height:25px;
-}
 
 
-.req{
-  background-color:white;
-  position:relative;
-  border-radius:10px;
-  width:40%;
-  height:450px;
-  margin:16px 8px;
-  box-shadow:3px 2px 3px gray;
-  overflow:hidden;
-  display:inline-block;
-}
-.req-head{
-  background-color:rgb(255, 200,30);
-  padding:5px;
-}
-.req-head .req-time{
-  font-size:10px;
-  color:gray;
-}
-.req-head.closed{
-  background-color:rgb(222,222,222);
-}
-.req-body{
-  padding:2px;
-}
-.req .applying{
-  position:absolute;
-  bottom:0;
-  color:rgb(100,150,100);
-  right:15px;
-  font-size:13px;
-}
+
 
 .requests-loading{
   position:absolute;
@@ -226,3 +168,32 @@ div,input{
     transform: rotate(360deg);
   }
 }
+
+
+.title{
+  width:100%;
+  height:10%;
+  margin:auto;
+  font-size: 30px;
+}
+.header{
+  margin:0px;
+  font-size:30px;
+  height:50px;
+  color: black;
+  background-color:rgb(255, 158, 12);
+}
+.btn{
+  background-color: #ffc81e;
+  width:70%;
+  height:100%;
+  margin:auto;
+  font-size: 20px;
+}
+.textarea{
+  size: 50px;
+  font-size: 20px;
+  padding: 5px;
+  margin: auto;
+}
+

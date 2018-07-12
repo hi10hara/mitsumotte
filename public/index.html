@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mitsumotte</title>
     <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="bundle/bundle.css">
     <!-- update the version number as needed -->
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
@@ -15,76 +15,26 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
-    <script src="lib/vue.js"></script>
     <script>
       // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyB9vdXsq1o_XAa_8kjFP2tZyARRIg9F1X0",
-        authDomain: "digicom-low-1111-06268460.firebaseapp.com",
-        databaseURL: "https://digicom-low-1111-06268460.firebaseio.com",
-        projectId: "digicom-low-1111-06268460",
-        storageBucket: "digicom-low-1111-06268460.appspot.com",
-        messagingSenderId: "430203856083"
-      };
-      firebase.initializeApp(config);
+      window.initFirebase = ()=>{
+        const config = {
+          apiKey: "AIzaSyB9vdXsq1o_XAa_8kjFP2tZyARRIg9F1X0",
+          authDomain: "digicom-low-1111-06268460.firebaseapp.com",
+          databaseURL: "https://digicom-low-1111-06268460.firebaseio.com",
+          projectId: "digicom-low-1111-06268460",
+          storageBucket: "digicom-low-1111-06268460.appspot.com",
+          messagingSenderId: "430203856083"
+        };
+        firebase.initializeApp(config);
+        return firebase
+      }
+      
     </script>
   </head>
   
 <body>
-  <div id="app">
-
-    <h1 class="header"><img class="header-icon" src="img/logo.png"/>
-    <div class="search-box">
-      <input name="keywords2" id="keywords2" placeholder="検索" type="text" /> 
-      <input type="image" src="img/btn2.gif" alt="検索" name="searchBtn2" id="searchBtn2" />  
-    </div></h1>
-    <div class="main">
-      <div class="requests">
-        <transition name="loading">
-            <div class="requests-loading" v-if="requestsLoading">
-              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-            </div>
-        </transition>
-        <mi-request class="req" v-for="(r, key) in requests" :key="key" :request="r" :id="key"></mi-request>
-      </div>
-      <div class="your-info">
-        <div class="store-warp">
-          <div class="store-head">
-            <img class="store-icon" src="img/icon.png"/>
-            <div class="store-name">{{store.name}}</div>
-            <div style="clear:both"></div>
-          </div>
-          <div v-if="!editDesc" class="store-info">{{store.description}}</div>
-          <div v-else class="store-info"><textarea v-model="store.description"></textarea></div>
-        </div>
-        <div class="rate-avg">総合評価:<rate-parts :rate="store.rateAverage"></rate-parts></div>
-
-        <div>最新のコメント</div>
-        <div class="reputations">
-          <div class="reputation" v-for="r in store.reputs">
-            <div class="rep-icon"></div><div class="rep-name">{{r.name}}</div>
-            <rate-parts :rate="r.rate"></rate-parts>
-            <div class="repute">{{r.repute}}</div>
-          </div>
-        </div>
-        <img class="ad" src="img/NTTコミュニケーションズ.png"/>
-      </div>
-    </div>
-  </div>
-  
-  <script type="text/x-template" id="r">
-    <div class="req">
-      <div class="req-head" :class="request.status">{{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span></div>
-      <div class="req-body">
-        <div>予算上限:{{request.request['budget-limit']}}</div>
-        {{request.request.title}}
-        <div class="request-top-img">
-          <img class="top-img" :src="request.imgs[0]">
-        </div>
-        <div class="applying">現在交渉中: {{request.applying}}</div>
-      </div>
-    </div>
-  </script>
-<script src="js/main.js"></script>
+  <div id="app"></div>
+<script src="./bundle/bundle.js"></script>
 </body>
 </html>
