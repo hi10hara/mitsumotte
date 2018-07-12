@@ -15,7 +15,6 @@ module.exports = async s=>{
       body:createBody(s),
     })
     const result = await res.json()
-    console.log(result)
     const {data:{translations:[{translatedText}]}} = result
     return translatedText
   }catch(e){

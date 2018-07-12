@@ -5,6 +5,9 @@
 input,textarea,button{
   font-family:inherit;
 }
+.category-header{
+  position:relative;
+}
 .category-icon{
   display:inline-block;
   background-size:contain;
@@ -31,6 +34,14 @@ input,textarea,button{
 .direct-img{
   display:none;
 }
+.icon-spinner11{
+  position:absolute;
+  font-size:15px;
+  width:30px;
+  height:30px;
+  right:0;
+  top:5px;
+}
 </style>
 
 <template>
@@ -39,11 +50,14 @@ input,textarea,button{
     <div :class="moveDirection" class="main-content">
       <transition name="swipe">
         <div class="category-body" v-if="body === 'category'">
-          <label class="direct-img-wrap">
-            <span>写真を撮って絞り込み</span>
-            <span class="icon-camera"/>
-            <input type="file" class="direct-img" @change="takeDirectPhoto" accept="image/*"/>
-          </label>
+          <div class="category-header">
+            <label class="direct-img-wrap">
+              <span>写真を撮って絞り込み</span>
+              <span class="icon-camera"/>
+              <input type="file" class="direct-img" @change="takeDirectPhoto" accept="image/*"/>
+            </label>
+            <div class="icon-spinner11" @click="eraseFilter"></div>
+          </div>
           <div class="categories">
             <div v-for="c in filteredCategories" class="cate-item" :key="c.name" @click="showRequest(c)">
                 <div><div class="category-icon" :style="{'background-image':`url(data:image/png;base64,${c.icon})`}"/>
@@ -161,8 +175,10 @@ export default {
       },
       showRequest(category){
         eventHub.$emit('show-request-view', category)
+      },
+      eraseFilter(){
+        this.$store.commit('eraseFilter')
       }
     }
-
   }
 </script>

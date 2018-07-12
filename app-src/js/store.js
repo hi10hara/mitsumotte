@@ -174,7 +174,6 @@ const store = new Vuex.Store({
       store.state.scanning = true
       const resultJson = await visionRequest(file)
       const {responses:[{labelAnnotations}]} = resultJson
-      console.log(labelAnnotations)
       const array = labelAnnotations.map(r=>r.description)
       const arrayJa = await Promise.all(array.map(s=>translateRequest(s)))
       store.state.filterTexts = arrayJa
