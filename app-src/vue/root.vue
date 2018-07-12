@@ -139,6 +139,9 @@ export default {
     methods:{
       takeDirectPhoto(ev){
         const [file] = ev.target.files
+        if(!file){
+          return
+        }
         this.$store.dispatch('takeDirectPhoto',file)
       },
       setBody(b){
