@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import visionRequest from './vision-request.js'
+import translateRequest from './translate-request.js'
 const LOGINFO = 'loginfo'
 const FILTER_TIMEOUT = 30000
 window.database = firebase.database()
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
-    version:'1.1.1',
+    version:'1.2.0',
     user:{
       displayName:'',
       uid:''
@@ -23,7 +24,8 @@ const store = new Vuex.Store({
     categories:[],
     filterTexts:[],
     storedImage:null,
-    scanning:false
+    scanning:false,
+    showVisionResult:false
   },
   mutations:{
     loadLast(state){
@@ -99,7 +101,6 @@ const store = new Vuex.Store({
           resolve()
         })
       })
-      
     },
     async getMyRequests(store){
       const {state} = store
@@ -175,12 +176,17 @@ const store = new Vuex.Store({
       const {responses:[{labelAnnotations}]} = resultJson
       console.log(labelAnnotations)
       const array = labelAnnotations.map(r=>r.description)
-      store.state.filterTexts = array
+      const arrayJa = await Promise.all(array.map(s=>translateRequest(s)))
+      store.state.filterTexts = arrayJa
       setTimeout(()=>{
-        store.commit('eraseFilter')
+        //store.commit('eraseFilter')
       }, FILTER_TIMEOUT)
       store.state.storedImage = file
       store.state.scanning = false
+      store.state.showVisionResult = true
+      setTimeout(()=>{
+        store.state.showVisionResult = false
+      }, 3000)
     }
   },
   getters:{

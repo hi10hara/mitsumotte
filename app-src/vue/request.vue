@@ -190,7 +190,7 @@
       </div>
     <div>カテゴリ {{category.caption}}</div>
     <div>
-      <textarea class="request-detail" v-model="requestDetail" placeholder="修理内容についてざっくりと説明"></textarea>
+      <textarea class="request-detail" v-model="requestDetail" placeholder="依頼内容についてざっくりと説明"></textarea>
     </div>
     <div>
       <label class="select-img">

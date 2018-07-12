@@ -63,7 +63,7 @@ input,textarea,button{
       </transition>
       <transition name="swipe">
         <div class="talk-body" v-if="body=== 'user'">
-          設定画面
+          <div v-for="txt in $store.state.filterTexts" :key="txt">{{txt}}</div>
         </div>
       </transition>
     </div>
@@ -83,6 +83,7 @@ input,textarea,button{
     </div>
     <request-view/>
     <visioning/>
+    <vision-result/>
   </div>
 </template>
 <script>
@@ -92,6 +93,7 @@ import Login from './login.vue'
 import MtTalks from './mt-talks.vue'
 import {mapGetters} from 'vuex'
 import Visioning from './visioning.vue'
+import VisionResult from './vision-result.vue'
 const views = [
   'category',
   'talk',
@@ -103,7 +105,8 @@ export default {
     Visioning,
     Login,
     RequestView,
-    MtTalks
+    MtTalks,
+    VisionResult
   },
     data(){
       return {
