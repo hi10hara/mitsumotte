@@ -42,7 +42,7 @@
 </style>
 <template>
 <transition name="fade">
-  <div class="vision-result-wrap" v-if="show">
+  <div class="vision-result-wrap" @click="$store.commit('cleaResult')" v-if="show">
     <div class="vision-result-img">
       <img :src="imgUrl"/>
     </div>
