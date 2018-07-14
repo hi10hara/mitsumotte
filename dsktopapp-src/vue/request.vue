@@ -28,8 +28,13 @@
   padding:2px;
 }
 .req .applying{
+  border-radius:5px;
+  background-color:rgba(255,255,255,0.8);
+  padding:2px 5px;
   position:absolute;
   bottom:0;
+  font-weight:bold;
+  box-shadow:2px 1px 6px gray;
   color:rgb(100,150,100);
   right:15px;
   font-size:20px;
@@ -87,19 +92,26 @@
       <div class="request-top-img">
         <img class="top-img" v-for="img in request.imgs" :src="img" :key="img">
       </div>
-      <div class="applying">現在交渉中: {{request.applying}}</div>
+      <div class="applying">{{mappedState}}</div>
     </div>
   </div>
 </template>
 <script>
 import eventHub from '../js/event-hub.js'
 const aHour = 1000 * 60 * 60
+const stateMap = {
+  open:'依頼中',
+  close:'成約済'
+}
 export default {
   props:{
     id:String,
     request:Object
   },
   computed:{
+    mappedState(){
+      return stateMap[this.request.status]
+    },
     unreads(){
       if(!this.request.chat){
         return 0

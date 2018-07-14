@@ -62,6 +62,7 @@
 <script>
 import eventHub from '../js/event-hub.js'
 import ChatMess from './chat-mess.vue'
+import {mapActions} from 'vuex'
 export default {
   data(){
     return {
@@ -96,6 +97,9 @@ export default {
   },
   computed:{
     unreads(){
+      if(!this.chat){
+        return 0
+      }
       return Object.keys(this.chat).filter(k=>!this.chat[k].user).length
     }
   },
@@ -106,10 +110,7 @@ export default {
     })
   },
   methods:{
-    beep(){
-      document.querySelector('#beep').play()
-      navigator.vibrate([300, 50, 100, 20, 100])
-    },
+    ...mapActions({beep:'beep'}),
     sendMessage(){
       const mc = this.chatContent.trim()
       if(!mc){

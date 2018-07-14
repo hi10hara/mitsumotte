@@ -64,7 +64,7 @@ input, textarea,select{
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           </div>
         </transition>
-        <mi-request class="req" v-for="(r, key) in requests" :key="key" :request="r" :id="key"></mi-request>
+        <mi-request class="req" v-for="r in requests" :key="r.key" :request="r.req" :id="r.key"></mi-request>
       </div>
       <div class="your-info">
         <div class="store-wrap" >
@@ -99,7 +99,7 @@ import Request from './request.vue'
 import RequestDetail from './request-detail.vue'
 import PhotoViewer from './photo-viewer.vue'
 import Rate from './rate.vue'
-import {mapState} from 'vuex'
+import {mapState, mapGetters} from 'vuex'
 export default {
   data(){
     return {
@@ -107,10 +107,12 @@ export default {
     }
   },
   computed:{
+    ...mapGetters({
+      requests:'sortedRequests'
+    }),
     ...mapState({
       store:'store',
       storeId:'storeId',
-      requests:'requests',
       requestsLoading:'requestsLoading'
     })
   },

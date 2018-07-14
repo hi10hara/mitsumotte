@@ -177,15 +177,16 @@ const store = new Vuex.Store({
       const array = labelAnnotations.map(r=>r.description)
       const arrayJa = await Promise.all(array.map(s=>translateRequest(s)))
       store.state.filterTexts = arrayJa
-      setTimeout(()=>{
-        //store.commit('eraseFilter')
-      }, FILTER_TIMEOUT)
       store.state.storedImage = file
       store.state.scanning = false
       store.state.showVisionResult = true
       setTimeout(()=>{
         store.state.showVisionResult = false
       }, 3000)
+    },
+    beep(){
+      document.querySelector('#beep').play()
+      navigator.vibrate([300, 50, 100, 20, 100])
     }
   },
   getters:{
@@ -197,8 +198,36 @@ const store = new Vuex.Store({
       return state.categories.filter(c=>{
         return (c.keywords || []).some(k=> fts.includes(k))
       })
+    },
+    unreads(state){
+      return Object.keys(state.myReqs).reduce((t, rk)=>{
+        const r = state.myReqs[rk]
+        if(!r.chat){
+          return 0
+        }
+        t += Object.keys(r.chat).reduce((ct,company)=>{
+          const chat = r.chat[company]
+          ct += Object.keys(chat).reduce((cct, mkey)=>{
+            const m = chat[mkey]
+            cct += m.user ? 0 : 1
+            return cct
+          },0)
+          return ct
+        }, 0)
+        return t
+      },0)
     }
   }
+})
+store.watch((state, getters)=>{
+  return getters.unreads
+},(v, ov)=>{
+  console.log(v, ov)
+  if(v > ov){
+    store.dispatch('beep')
+  }
+},{
+  deep:true
 })
 
 export default store
