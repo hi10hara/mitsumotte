@@ -4,6 +4,8 @@ import nofify from './notification.js'
 import recursiveFetch from './recursive-fetch.js'
 const anHour = 1000 * 60 * 60
 const firebase = window.initFirebase()
+window.database = firebase.database()
+window.storage = firebase.storage()
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
@@ -26,7 +28,6 @@ const store = new Vuex.Store({
   },
   actions:{
     getStores({state}){
-      window.database = firebase.database()
       database.ref('/companies').on('value', sn=>{
         const companies = sn.val()
         console.log(companies)
@@ -80,7 +81,6 @@ const store = new Vuex.Store({
     sendChatMessage(store, {id, message}){
       const {state} = store
       const path = `/requests/${state.store.category}/${id}/chat/${state.storeId}/`
-      console.log(path)
       const chatRef = window.database.ref(path)
       chatRef.push({
         vendor:true,

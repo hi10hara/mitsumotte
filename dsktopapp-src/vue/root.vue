@@ -1,4 +1,22 @@
 <style>
+.store-wrap{
+  margin-bottom:10px;
+}
+.store-banner{
+  height:200px;
+  position:relative;
+}
+.store-banner-mask{
+  position:absolute;
+  height:200px;
+  top:0;
+  left:0;
+  width:100%;
+  background:linear-gradient(transparent ,rgba(255,255,255,0.5),white)
+}
+.store-head{
+  height:40px;
+}
 input, textarea,select{
   font-family:inherit;
   box-sizing:border-box;
@@ -13,6 +31,22 @@ input, textarea,select{
   flex-wrap:wrap;
   justify-content:center;
 }
+.ad{
+  height: calc(100% - 700px);
+  width:100%;
+  margin-top: 10%
+}
+.reputations{
+  overflow-y:scroll;
+  height:200px;
+  margin:10px;
+  padding:5px;
+  border-bottom:solid 1px gray;
+}
+.reputation{
+  margin:10px;
+}
+
 </style>
 <template>
   <div id="app">
@@ -26,24 +60,24 @@ input, textarea,select{
       <div class="requests">
         <div style="clear:both"></div>
         <transition name="loading">
-            <div class="requests-loading" v-if="requestsLoading">
-              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-            </div>
+          <div class="requests-loading" v-if="requestsLoading">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+          </div>
         </transition>
         <mi-request class="req" v-for="(r, key) in requests" :key="key" :request="r" :id="key"></mi-request>
       </div>
       <div class="your-info">
-        <div class="store-warp">
+        <div class="store-wrap" >
+          <div class="store-banner" :style="{'background-image':storeBanner}">
+            <div class="store-banner-mask"></div>
+          </div>
           <div class="store-head">
-            <img class="store-icon" src="img/icon.png"/>
             <div class="store-name">{{store.name}}</div>
             <div style="clear:both"></div>
           </div>
-          <div v-if="!editDesc" class="store-info">{{store.description}}</div>
-          <div v-else class="store-info"><textarea v-model="store.description"></textarea></div>
+          <div class="store-info">{{store.description}}</div>
         </div>
         <div class="rate-avg">総合評価:<rate-parts :rate="store.rateAverage"/></div>
-
         <div>最新のコメント</div>
         <div class="reputations">
           <div class="reputation" v-for="(r, i) in store.reputs" :key="i">
@@ -69,25 +103,29 @@ import {mapState} from 'vuex'
 export default {
   data(){
     return {
-      editDesc:false
+      storeBanner:''
     }
   },
-  computed:mapState({
-    store:'store',
-    requests:'requests',
-    requestsLoading:'requestsLoading'
-  }),
+  computed:{
+    ...mapState({
+      store:'store',
+      storeId:'storeId',
+      requests:'requests',
+      requestsLoading:'requestsLoading'
+    })
+  },
+  watch:{
+    async storeId(){
+      const url = await window.storage.ref(`store-img/${this.storeId}/banner.jpg`).getDownloadURL()
+      this.storeBanner = 'url(' + url + ')'
+    }
+  },
   components:{
     StoreSelector,
     'rate-parts':Rate,
     'mi-request':Request,
     RequestDetail,
     PhotoViewer
-  },
-  watch:{
-    'store.description'(v){
-
-    }
   },
   methods:{
 
