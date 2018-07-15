@@ -10,6 +10,26 @@
   flex-basis:500px;
   height:300px;
 }
+.req .stamp, .request-detail .stamp{
+  position:absolute;
+  top:0;
+  left:30%;
+  height:300px;
+  z-index:1000;
+  width:150px;
+  transform:rotate(-30deg);
+  background-repeat:no-repeat;
+  background-image:url('../img/done-request.png');
+  background-size:contain;
+}
+.req .stamp-enter-active, .request-detail .stamp-enter-active{
+  transition:all .4s ease;
+  transform:rotate(-30deg);
+}
+.req .stamp-enter, .request-detail .stamp-enter{
+  transform:scale(2);
+  opacity:0;
+}
 .req-head{
   background-color:#ffc81e;
   position: relative;
@@ -80,6 +100,9 @@
 
 <template>
   <div class="req" @click="showDetail">
+    <transition name="stamp">
+      <div class="stamp" v-if="isClosed"/>
+    </transition>
     <div class="req-head" :class="request.status">
       <span class="unreads" v-if="unreads">{{unreads}}</span>
       {{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span>
@@ -99,9 +122,10 @@
 <script>
 import eventHub from '../js/event-hub.js'
 const aHour = 1000 * 60 * 60
+const CLOSED = 'closed'
 const stateMap = {
   open:'依頼中',
-  close:'成約済'
+  closed:'成約済'
 }
 export default {
   props:{
@@ -109,6 +133,9 @@ export default {
     request:Object
   },
   computed:{
+    isClosed(){
+      return this.request.status === CLOSED
+    },
     mappedState(){
       return stateMap[this.request.status]
     },

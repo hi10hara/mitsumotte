@@ -111,6 +111,7 @@ input,textarea,button{
     <request-view/>
     <visioning/>
     <vision-result/>
+    <close-deal/>
   </div>
 </template>
 <script>
@@ -121,6 +122,7 @@ import MtTalks from './mt-talks.vue'
 import {mapGetters} from 'vuex'
 import Visioning from './visioning.vue'
 import VisionResult from './vision-result.vue'
+import CloseDeal from './close-deal.vue'
 const views = [
   'category',
   'talk',
@@ -133,7 +135,8 @@ export default {
     Login,
     RequestView,
     MtTalks,
-    VisionResult
+    VisionResult,
+    CloseDeal
   },
     data(){
       return {

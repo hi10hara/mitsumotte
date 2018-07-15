@@ -31,7 +31,6 @@
     padding:5px 10px;
     box-shadow:0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
     border-radius:2px;
-    background-color:white;
     margin:10px;
     width:auto;
     position:relative;
@@ -41,11 +40,18 @@
     color:gray;
     margin-left:20px;
   }
+  .proposal{
+    display:inline-block;
+    padding:2px;
+    text-decoration: underline;
+    font-weight:bold;
+    color:blue;
+  }
 </style>
 <template>
   <div ref="m" class="chat-m" :class="m.from">
     <div class="at">{{m.at | formatDatetime}}</div>
-    <div class="m">{{m.message}}<div class="arrow"/></div>
+    <div class="m"><span @click.stop="riseProposal" v-html="message"/><div class="arrow"/></div>
   </div>
 </template>
 <script>
@@ -65,6 +71,11 @@ export default {
       default:''
     }
   },
+  computed:{
+    message(){
+      return convertMess(this.m.message)
+    }
+  },
   mounted(){
     const {m} = this.$refs
     m.scrollIntoView()
@@ -75,7 +86,30 @@ export default {
         window.database.ref(`/requests/${this.id}`).set(this.m)
       }, 4000)
     }
+  },
+  methods:{
+    riseProposal(ev){
+      const {target} = ev
+      if(target.getAttribute('class') !== 'proposal'){
+        return
+      }
+      const price = parseInt(target.textContent.replace(/\D/g, ''))
+      this.$store.commit('setDeal', {
+        path:this.$parent.$parent.id,
+        price
+      })
+    }
   }
+}
+const priceReg = /([¥\\]\d(?:[\d,]*\d)?)/g
+function convertMess(m){
+  const matchies = m.match(priceReg)
+  if(!matchies){
+    return m
+  }
+  const lastMatch = matchies.pop()
+  const replaceEn = lastMatch.replace('\\', '¥')
+  return m.replace(lastMatch, `<span class="proposal">${replaceEn}</span>`)
 }
 </script>
 

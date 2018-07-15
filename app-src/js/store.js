@@ -25,7 +25,11 @@ const store = new Vuex.Store({
     filterTexts:[],
     storedImage:null,
     scanning:false,
-    showVisionResult:false
+    showVisionResult:false,
+    deal:{
+      path:'',
+      price:''
+    }
   },
   mutations:{
     loadLast(state){
@@ -60,6 +64,16 @@ const store = new Vuex.Store({
     },
     eraseFilter(state){
       state.filterTexts = []
+    },
+    unsetDeal(state){
+      state.deal = {
+        path:'',
+        price:0
+      }
+    },
+    setDeal(state, {path,price}){
+      state.deal.price = price
+      state.deal.path = path
     }
   },
   actions:{
@@ -187,6 +201,14 @@ const store = new Vuex.Store({
     beep(){
       document.querySelector('#beep').play()
       navigator.vibrate([300, 50, 100, 20, 100])
+    },
+    closeDeal(store){
+      const {database} = window
+      const {state:{deal}} = store
+      database.ref(`/requests/${deal.path}/status`)
+        .set('closed')
+      deal.price = 0
+      deal.path = ''
     }
   },
   getters:{
@@ -222,7 +244,6 @@ const store = new Vuex.Store({
 store.watch((state, getters)=>{
   return getters.unreads
 },(v, ov)=>{
-  console.log(v, ov)
   if(v > ov){
     store.dispatch('beep')
   }

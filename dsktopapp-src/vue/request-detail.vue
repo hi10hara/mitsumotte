@@ -9,6 +9,7 @@
   background-color:rgb(0,0,0,.5);
 }
 .request-detail{
+  position:relative;
   text-align:left;
   width:1000px;
   height:80%;
@@ -137,6 +138,7 @@ line-height: 1.3em;
   width:70%;
   float:left;
   text-align:center;
+  white-space:nowrap;
 }
 .request-img{
   top:0;
@@ -173,6 +175,9 @@ line-height: 1.3em;
 <transition name="req">
 <div class="cover" v-if="request">
   <div class="request-detail">
+    <transition name="stamp">
+      <div class="stamp" v-if="request.status === 'closed'"/>
+    </transition>
     <div class="request-header">
       <div class="close-btn" @click="close">X</div>
       <div class="request-info">
@@ -184,7 +189,7 @@ line-height: 1.3em;
         </div>
       </div>
       <div class="request-images">
-        <img v-for="img in request.imgs" :src="img" class="request-img" :key="img" @click="closeUp(img)">
+        <img v-for="img in request.imgs" :src="img" class="request-img" :key="img" @click="closeUp(img)"/>
       </div>
       <div style="clear:both;"/>
     </div>

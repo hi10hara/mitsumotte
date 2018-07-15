@@ -1,5 +1,6 @@
 <style>
 .chat{
+  background-color:white;
   margin:3px;
   box-shadow:var(--box-shadow);
 }
