@@ -42,28 +42,40 @@
 </style>
 <template>
 <transition name="fade">
-  <div class="vision-result-wrap" v-if="show">
+  <div class="vision-result-wrap" v-if="show" @click="hideResult">
     <div class="vision-result-img">
       <img :src="imgUrl"/>
     </div>
     <transition-group name="vres" class="vision-result-texts" tag="div">
-      <div class="vision-result-text" v-for="t in filters" :key="t">{{t}}</div>
+      <flop v-for="(t, i) in filters" :key="t.en" :n="i" :data="t">{{t}}</flop>
     </transition-group>
   </div>
 </transition>
 </template>
 <script>
 import {mapState} from 'vuex'
+import flop from './flop.vue'
 export default {
+  components:{
+    flop
+  },
   data(){
     return {
-      imgUrl:'',
-      filters:[]
+      imgUrl:''
     }
   },
   computed:{
     show(){
       return this.$store.state.showVisionResult
+    },
+    filters(){
+      const ja = this.$store.state.filterTextJa
+      return this.$store.state.filterTextEn.map((en, i)=>{
+        return {
+          en,
+          ja:ja[i]
+        }
+      })
     }
   },
   watch:{
@@ -75,22 +87,15 @@ export default {
     }
   },
   methods:{
+    hideResult(){
+      this.$store.commit('hideResult')
+    },
     showImg(){
-      this.filters = []
       const fl = new FileReader()
       fl.addEventListener('load', ev=>{
         this.imgUrl = ev.target.result
       })
       fl.readAsDataURL(this.$store.state.storedImage)
-      this.copyStart()
-    },
-    copyStart(){
-      const src = this.$store.state.filterTexts
-      src.forEach((s, ind)=>{
-        setTimeout(()=>{
-          this.filters.push(s)
-        },ind * 250)
-      })
     }
   }
 }

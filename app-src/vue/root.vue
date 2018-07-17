@@ -89,7 +89,7 @@ input,textarea,button{
       </transition>
       <transition name="swipe">
         <div class="talk-body" v-if="body=== 'user'">
-          <div v-for="txt in $store.state.filterTexts" :key="txt">{{txt}}</div>
+          <div v-for="txt in $store.state.filterTextJa" :key="txt">{{txt}}</div>
         </div>
       </transition>
     </div>

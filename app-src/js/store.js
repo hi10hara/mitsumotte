@@ -8,7 +8,7 @@ window.database = firebase.database()
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
-    version:'1.2.0',
+    version:'1.3.0',
     user:{
       displayName:'',
       uid:''
@@ -22,7 +22,8 @@ const store = new Vuex.Store({
     logining:false,
     requestMessage:'',
     categories:[],
-    filterTexts:[],
+    filterTextJa:[],
+    filterTextEn:[],
     storedImage:null,
     scanning:false,
     showVisionResult:false,
@@ -63,7 +64,8 @@ const store = new Vuex.Store({
       state.storedImage = null
     },
     eraseFilter(state){
-      state.filterTexts = []
+      state.filterTextJa = []
+      state.filterTextEn = []
     },
     unsetDeal(state){
       state.deal = {
@@ -74,6 +76,9 @@ const store = new Vuex.Store({
     setDeal(state, {path,price}){
       state.deal.price = price
       state.deal.path = path
+    },
+    hideResult(state){
+      state.showVisionResult = false
     }
   },
   actions:{
@@ -190,13 +195,11 @@ const store = new Vuex.Store({
       const {responses:[{labelAnnotations}]} = resultJson
       const array = labelAnnotations.map(r=>r.description)
       const arrayJa = await Promise.all(array.map(s=>translateRequest(s)))
-      store.state.filterTexts = arrayJa
+      store.state.filterTextEn = array
+      store.state.filterTextJa = arrayJa
       store.state.storedImage = file
       store.state.scanning = false
       store.state.showVisionResult = true
-      setTimeout(()=>{
-        store.state.showVisionResult = false
-      }, 3000)
     },
     beep(){
       document.querySelector('#beep').play()
@@ -213,7 +216,7 @@ const store = new Vuex.Store({
   },
   getters:{
     filteredCategories(state){
-      const {filterTexts:fts} = state
+      const {filterTextJa:fts} = state
       if(!fts.length){
         return state.categories
       }
