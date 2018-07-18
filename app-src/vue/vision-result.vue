@@ -89,8 +89,10 @@ export default {
   watch:{
     show(v){
       if(!v){
+        this.imgUrl = ''
         return
       }
+      this.translated = false
       this.showImg()
     }
   },
