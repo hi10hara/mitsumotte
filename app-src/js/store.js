@@ -204,12 +204,6 @@ const store = new Vuex.Store({
       const {responses:[{labelAnnotations}]} = resultJson
       const array = labelAnnotations.map(r=>r.description)
       const arrayJa = await Promise.all(array.map(s=>translateRequest(s)))
-<<<<<<< HEAD
-      store.state.filterTexts = arrayJa
-      store.state.storedImage = file
-      store.state.scanning = false
-      store.state.showVisionResult = true
-=======
       store.state.filterTextEn = array
       store.state.filterTextJa = arrayJa
       store.state.storedImage = file
@@ -227,7 +221,6 @@ const store = new Vuex.Store({
         .set('closed')
       deal.price = 0
       deal.path = ''
->>>>>>> 955fecf8b267cc15b2d37a1087592afc98b87f4d
     }
   },
   getters:{
