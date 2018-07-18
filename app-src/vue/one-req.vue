@@ -2,9 +2,9 @@
 .req{
   padding:5px;
   margin:5px;
-  box-shadow:var(--box-shadow)
+  box-shadow:var(--box-shadow);
 }
-.requested-at{
+.requested-at,.request-budget{
   font-size:10px;
   color:gray;
   text-align:left;
@@ -18,10 +18,13 @@
 .request-img{
   height:100px;
 }
+.req.close{
+  background-color:rgb(200,200,200);
+}
 </style>
 <template>
-  <div class="req">
-    <div class="requested-at">依頼日時:{{req.requested_at | formatDatetime}}</div>
+  <div class="req" :class="req.status">
+    <div class="requested-at">依頼日時:{{req.requested_at | formatDatetime}} 予算上限:{{req.limitBudget | currency}}</div>
     <div class="request-content">
       <div class="request-left">
         <div>{{req.categoryCaption}}</div>

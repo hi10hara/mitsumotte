@@ -202,7 +202,7 @@
     <div class="images">
       <attach-image v-for="ai in attachImages" :key="ai.name" :file="ai"/>
     </div>
-    <div>予算上限 <div class="limit-budget" v-if="!budgetInputMode" @click="setBudgetInputMode">¥{{limitBudgetStr}}</div>
+    <div>予算上限 <div class="limit-budget" v-if="!budgetInputMode" @click="setBudgetInputMode">{{limitBudget | currency}}</div>
     <input type="number" ref="binput" class="limit-budget" v-else min="0" v-model.number="limitBudget" style="width:50%" @focusout="budgetInputMode=false"/>
     </div>
     <div>見積もり期限<input class="limitDate" type="date" v-model="limitDate"/></div>
@@ -235,12 +235,6 @@ export default {
     }
   },
   computed:{
-     limitBudgetStr:{
-      get(){
-        const rev = (''+this.limitBudget).split('').reverse().join('')
-        return rev.replace(/(...)(?=.)/g, '$1,').split('').reverse().join('')
-      }
-    },
     ...mapState({
       requestMessage:'requestMessage'
     })

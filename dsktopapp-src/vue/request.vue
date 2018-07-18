@@ -10,6 +10,26 @@
   flex-basis:500px;
   height:300px;
 }
+.req .stamp, .request-detail .stamp{
+  position:absolute;
+  top:0;
+  left:30%;
+  height:300px;
+  z-index:1000;
+  width:150px;
+  transform:rotate(-30deg);
+  background-repeat:no-repeat;
+  background-image:url('../img/done-request.png');
+  background-size:contain;
+}
+.req .stamp-enter-active, .request-detail .stamp-enter-active{
+  transition:all .4s ease;
+  transform:rotate(-30deg);
+}
+.req .stamp-enter, .request-detail .stamp-enter{
+  transform:scale(2);
+  opacity:0;
+}
 .req-head{
   background-color:#ffc81e;
   position: relative;
@@ -28,8 +48,13 @@
   padding:2px;
 }
 .req .applying{
+  border-radius:5px;
+  background-color:rgba(255,255,255,0.8);
+  padding:2px 5px;
   position:absolute;
   bottom:0;
+  font-weight:bold;
+  box-shadow:2px 1px 6px gray;
   color:rgb(100,150,100);
   right:15px;
   font-size:20px;
@@ -75,6 +100,9 @@
 
 <template>
   <div class="req" @click="showDetail">
+    <transition name="stamp">
+      <div class="stamp" v-if="isClosed"/>
+    </transition>
     <div class="req-head" :class="request.status">
       <span class="unreads" v-if="unreads">{{unreads}}</span>
       {{request.name}} <span class="req-time">{{request.requested_at | dateFormat}}</span>
@@ -87,19 +115,30 @@
       <div class="request-top-img">
         <img class="top-img" v-for="img in request.imgs" :src="img" :key="img">
       </div>
-      <div class="applying">現在交渉中: {{request.applying}}</div>
+      <div class="applying">{{mappedState}}</div>
     </div>
   </div>
 </template>
 <script>
 import eventHub from '../js/event-hub.js'
 const aHour = 1000 * 60 * 60
+const CLOSED = 'closed'
+const stateMap = {
+  open:'依頼中',
+  closed:'成約済'
+}
 export default {
   props:{
     id:String,
     request:Object
   },
   computed:{
+    isClosed(){
+      return this.request.status === CLOSED
+    },
+    mappedState(){
+      return stateMap[this.request.status]
+    },
     unreads(){
       if(!this.request.chat){
         return 0

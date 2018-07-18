@@ -8,7 +8,6 @@ export default function recursiveFetch(src, dest){
     const sData = src[key]
     const destData = dest[key]
     if(typeof destData === 'object'){
-      console.log(key, sData, destData)
       Vue.set(src,key,recursiveFetch(sData || {}, destData))
       return
     }

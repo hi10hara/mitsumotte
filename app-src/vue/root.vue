@@ -42,6 +42,18 @@ input,textarea,button{
   right:0;
   top:5px;
 }
+.all-unreads{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  z-index:1000;
+  border-radius:100%;
+  background-color:rgb(255, 100,100);
+  text-align:center;
+  height:1em;
+  width:1.3em;
+
+}
 </style>
 
 <template>
@@ -77,7 +89,7 @@ input,textarea,button{
       </transition>
       <transition name="swipe">
         <div class="talk-body" v-if="body=== 'user'">
-          <div v-for="txt in $store.state.filterTexts" :key="txt">{{txt}}</div>
+          <div v-for="txt in $store.state.filterTextJa" :key="txt">{{txt}}</div>
         </div>
       </transition>
     </div>
@@ -85,7 +97,8 @@ input,textarea,button{
       <div class="shortcut category" @click="selectBody('category')" :class="{selected:body === 'category'}">
         <span class="icon-file-text"></span>
       </div>
-      <div class="shortcut talk" @click="selectBody('talk')" :class="{selected:body === 'talk'}">
+      <div class="shortcut talk" style="position:relative" @click="selectBody('talk')" :class="{selected:body === 'talk'}">
+        <span class="all-unreads" v-if="unreads">{{unreads}}</span>
         <span class="icon-bubbles4"></span>
       </div>
       <div class="shortcut hists" @click="selectBody('hists')" :class="{selected:body === 'hists'}">
@@ -98,6 +111,7 @@ input,textarea,button{
     <request-view/>
     <visioning/>
     <vision-result/>
+    <close-deal/>
   </div>
 </template>
 <script>
@@ -108,6 +122,7 @@ import MtTalks from './mt-talks.vue'
 import {mapGetters} from 'vuex'
 import Visioning from './visioning.vue'
 import VisionResult from './vision-result.vue'
+import CloseDeal from './close-deal.vue'
 const views = [
   'category',
   'talk',
@@ -120,7 +135,8 @@ export default {
     Login,
     RequestView,
     MtTalks,
-    VisionResult
+    VisionResult,
+    CloseDeal
   },
     data(){
       return {
@@ -132,7 +148,8 @@ export default {
       }
     },
     computed:mapGetters({
-      filteredCategories:'filteredCategories'
+      filteredCategories:'filteredCategories',
+      unreads:'unreads'
     }),
     created:function(){
       setTimeout(this.uncover, 2000)

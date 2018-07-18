@@ -7,7 +7,11 @@ window.database = firebase.database()
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
+<<<<<<< HEAD
     version:'1.2.1',
+=======
+    version:'1.3.0',
+>>>>>>> 955fecf8b267cc15b2d37a1087592afc98b87f4d
     user:{
       displayName:'',
       uid:''
@@ -21,10 +25,15 @@ const store = new Vuex.Store({
     logining:false,
     requestMessage:'',
     categories:[],
-    filterTexts:[],
+    filterTextJa:[],
+    filterTextEn:[],
     storedImage:null,
     scanning:false,
-    showVisionResult:false
+    showVisionResult:false,
+    deal:{
+      path:'',
+      price:''
+    }
   },
   mutations:{
     loadLast(state){
@@ -58,9 +67,26 @@ const store = new Vuex.Store({
       state.storedImage = null
     },
     eraseFilter(state){
+<<<<<<< HEAD
       state.filterTexts = []
     },
     cleaResult(state){
+=======
+      state.filterTextJa = []
+      state.filterTextEn = []
+    },
+    unsetDeal(state){
+      state.deal = {
+        path:'',
+        price:0
+      }
+    },
+    setDeal(state, {path,price}){
+      state.deal.price = price
+      state.deal.path = path
+    },
+    hideResult(state){
+>>>>>>> 955fecf8b267cc15b2d37a1087592afc98b87f4d
       state.showVisionResult = false
     }
   },
@@ -178,23 +204,70 @@ const store = new Vuex.Store({
       const {responses:[{labelAnnotations}]} = resultJson
       const array = labelAnnotations.map(r=>r.description)
       const arrayJa = await Promise.all(array.map(s=>translateRequest(s)))
+<<<<<<< HEAD
       store.state.filterTexts = arrayJa
       store.state.storedImage = file
       store.state.scanning = false
       store.state.showVisionResult = true
+=======
+      store.state.filterTextEn = array
+      store.state.filterTextJa = arrayJa
+      store.state.storedImage = file
+      store.state.scanning = false
+      store.state.showVisionResult = true
+    },
+    beep(){
+      document.querySelector('#beep').play()
+      navigator.vibrate([300, 50, 100, 20, 100])
+    },
+    closeDeal(store){
+      const {database} = window
+      const {state:{deal}} = store
+      database.ref(`/requests/${deal.path}/status`)
+        .set('closed')
+      deal.price = 0
+      deal.path = ''
+>>>>>>> 955fecf8b267cc15b2d37a1087592afc98b87f4d
     }
   },
   getters:{
     filteredCategories(state){
-      const {filterTexts:fts} = state
+      const {filterTextJa:fts} = state
       if(!fts.length){
         return state.categories
       }
       return state.categories.filter(c=>{
         return (c.keywords || []).some(k=> fts.includes(k))
       })
+    },
+    unreads(state){
+      return Object.keys(state.myReqs).reduce((t, rk)=>{
+        const r = state.myReqs[rk]
+        if(!r.chat){
+          return 0
+        }
+        t += Object.keys(r.chat).reduce((ct,company)=>{
+          const chat = r.chat[company]
+          ct += Object.keys(chat).reduce((cct, mkey)=>{
+            const m = chat[mkey]
+            cct += m.user ? 0 : 1
+            return cct
+          },0)
+          return ct
+        }, 0)
+        return t
+      },0)
     }
   }
+})
+store.watch((state, getters)=>{
+  return getters.unreads
+},(v, ov)=>{
+  if(v > ov){
+    store.dispatch('beep')
+  }
+},{
+  deep:true
 })
 
 export default store
