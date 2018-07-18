@@ -7,11 +7,7 @@ window.database = firebase.database()
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state:{
-<<<<<<< HEAD
-    version:'1.2.1',
-=======
-    version:'1.3.0',
->>>>>>> 955fecf8b267cc15b2d37a1087592afc98b87f4d
+    version:'1.3.1',
     user:{
       displayName:'',
       uid:''
@@ -67,11 +63,6 @@ const store = new Vuex.Store({
       state.storedImage = null
     },
     eraseFilter(state){
-<<<<<<< HEAD
-      state.filterTexts = []
-    },
-    cleaResult(state){
-=======
       state.filterTextJa = []
       state.filterTextEn = []
     },
@@ -86,7 +77,6 @@ const store = new Vuex.Store({
       state.deal.path = path
     },
     hideResult(state){
->>>>>>> 955fecf8b267cc15b2d37a1087592afc98b87f4d
       state.showVisionResult = false
     }
   },

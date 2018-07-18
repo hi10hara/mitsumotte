@@ -42,12 +42,12 @@
 </style>
 <template>
 <transition name="fade">
-  <div class="vision-result-wrap" v-if="show" @click="hideResult">
+  <div class="vision-result-wrap" v-if="show" @click="tap">
     <div class="vision-result-img">
       <img :src="imgUrl"/>
     </div>
     <transition-group name="vres" class="vision-result-texts" tag="div">
-      <flop v-for="(t, i) in filters" :key="t.en" :n="i" :data="t">{{t}}</flop>
+      <flop v-for="(t, i) in filters" :key="t.en" :n="i" :data="t" :flop="translated">{{t}}</flop>
     </transition-group>
   </div>
 </transition>
@@ -61,7 +61,15 @@ export default {
   },
   data(){
     return {
-      imgUrl:''
+      imgUrl:'',
+      translated:false
+    }
+  },
+  watch:{
+    show(v){
+      if(v){
+        this.translated = false
+      }
     }
   },
   computed:{
@@ -87,6 +95,12 @@ export default {
     }
   },
   methods:{
+    tap(){
+      if(this.translated){
+        return this.hideResult()
+      }
+      this.translated = true
+    },
     hideResult(){
       this.$store.commit('hideResult')
     },

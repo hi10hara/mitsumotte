@@ -36,14 +36,22 @@ export default {
       rotate:false
     }
   },
-  created(){
-    setTimeout(()=>{
-      this.rotate = true
-    },2000 + (this.n * 150))
+  watch:{
+    flop(v){
+      this.doFlop()
+    }
   },
   props:{
     n:Number,
-    data:Object
+    data:Object,
+    flop:Boolean
+  },
+  methods:{
+    doFlop(){
+      setTimeout(()=>{
+        this.rotate = true
+      }, (this.n * 150))
+    }
   }
 }
 </script>
