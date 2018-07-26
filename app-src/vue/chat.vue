@@ -45,10 +45,22 @@
   width:15% !important;
   height:40px;
 }
+.map-icon{
+  position:absolute;
+  right:5px;
+  top:2px;
+  display:inline-block;
+  height:20px;
+  width:20px;
+  text-align:center;
+  background-image:url('../img/map.png');
+  background-repeat: no-repeat;
+  background-size:contain;
+}
 </style>
 <template>
   <div class="chat" @click="fold = !fold">
-    <div class="chat-name"><span class="unreads" v-if="unreads">{{unreads}}</span>{{store.name}}</div>
+    <div class="chat-name"><span class="unreads" v-if="unreads">{{unreads}}</span>{{store.name}}<span class="map-icon" @click.stop.capture="openMap"/></div>
     <transition name="chat" @after-enter="scrollToEnd">
       <div class="chat-content-wrap" v-if="!fold">
         <div class="chat-content" ref="chat">
@@ -140,6 +152,22 @@ export default {
         this.chatContent = this.chatContent.replace(soshin, '$1')
         this.sendMessage()
       }
+    },
+    async openMap(){
+      const from = await new Promise(resolve=>{
+        navigator.geolocation.getCurrentPosition(loc=>{
+          const {coords:{latitude,longitude}} = loc
+          resolve({
+            latitude,
+            longitude
+          })
+        })
+      })
+      console.log(from)
+      const to = this.store.address
+      const address = `https://www.google.com/maps/?saddr=${from.latitude},${from.longitude}&daddr=${to}`
+      console.log(address)
+      window.open(address)
     }
   }
 }

@@ -54,6 +54,17 @@ input,textarea,button{
   width:1.3em;
 
 }
+.map-cover{
+  height:100%;
+  width:100%;
+  position:fixed;
+  z-index:10000;
+  top:0;left:0;
+}
+.map-cover iframe{
+  height:100%;
+  width:100%;
+}
 </style>
 
 <template>
